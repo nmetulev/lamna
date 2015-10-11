@@ -29,6 +29,8 @@ namespace Lamna
         {
             this.InitializeComponent();
             SizeChanged += MainPage_SizeChanged;
+
+            RootFrame.Navigate(typeof(Views.Home));
         }
 
         private void MainPage_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -40,11 +42,11 @@ namespace Lamna
             }
             else
             {
-                ContentTransform.TranslateY = 60;
-                LockScreenTransform.TranslateY = -e.NewSize.Height + 60;
+                ContentTransform.TranslateY = 20;
+                LockScreenTransform.TranslateY = -e.NewSize.Height + 20;
             }
 
-            Content.Height = e.NewSize.Height - 60;
+            Content.Height = e.NewSize.Height - 20;
             
         }
 
@@ -52,15 +54,17 @@ namespace Lamna
         {
             locked = false;
 
-            RootFrame.Navigate(typeof(Views.Home));
-
             LoginAnimation.Stop();
 
-            ContentAnimation.To = 60;
+            ContentAnimation.To = 20;
             ContentAnimation.From = ContentTransform.TranslateY;
 
-            LockScreenAnimation.To = - Window.Current.Bounds.Height + 60;
+            LockScreenAnimation.To = - Window.Current.Bounds.Height + 20;
             LockScreenAnimation.From = 0;
+
+            CityAnimation.To = 60;
+            CityAnimation.From = 0;
+            CityAnimation.Duration = TimeSpan.FromMilliseconds(2000);
 
             SkyAnimation.To = 1;
             SkyAnimation.From = 0;
@@ -79,10 +83,14 @@ namespace Lamna
                 LoginAnimation.Stop();
 
                 ContentAnimation.To = Window.Current.Bounds.Height;
-                ContentAnimation.From = 60;
+                ContentAnimation.From = 20;
 
                 LockScreenAnimation.To = 0;
-                LockScreenAnimation.From = -Window.Current.Bounds.Height + 60;
+                LockScreenAnimation.From = -Window.Current.Bounds.Height + 20;
+
+                CityAnimation.To = 0;
+                CityAnimation.From = 60;
+                CityAnimation.Duration = TimeSpan.FromMilliseconds(2000);
 
                 SkyAnimation.To = 0;
                 SkyAnimation.From = 1;

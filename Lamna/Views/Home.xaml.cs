@@ -1,12 +1,16 @@
-﻿using System;
+﻿using Lamna.Data;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Maps;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
@@ -22,9 +26,29 @@ namespace Lamna.Views
     /// </summary>
     public sealed partial class Home : Page
     {
+        ObservableCollection<HomeLocation> Locations = new ObservableCollection<HomeLocation>();
+
         public Home()
         {
             this.InitializeComponent();
+
+            Map.Center = new Windows.Devices.Geolocation.Geopoint(new Windows.Devices.Geolocation.BasicGeoposition()
+            {
+                Latitude = 47.619225,
+                Longitude = -122.20239
+            });
+
+            foreach (var loc in DataSource.GetSource().Locations)
+            {
+                Locations.Add(loc);
+            }
+        }
+
+        private void LocationClicked (object sender, RoutedEventArgs e)
+        {
+            var loc = (sender as Button).DataContext as HomeLocation;
+
         }
     }
+    
 }
