@@ -32,11 +32,7 @@ namespace Lamna.Views
         {
             this.InitializeComponent();
 
-            Map.Center = new Windows.Devices.Geolocation.Geopoint(new Windows.Devices.Geolocation.BasicGeoposition()
-            {
-                Latitude = 47.619225,
-                Longitude = -122.20239
-            });
+            Map.Center = DataSource.GetSource().Locations.First().Location;
 
             foreach (var loc in DataSource.GetSource().Locations)
             {
@@ -47,7 +43,7 @@ namespace Lamna.Views
         private void LocationClicked (object sender, RoutedEventArgs e)
         {
             var loc = (sender as Button).DataContext as HomeLocation;
-
+            ((App)App.Current).MainFrame.Navigate(typeof(LocationView), loc);
         }
     }
     

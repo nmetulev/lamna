@@ -5,6 +5,9 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Foundation.Metadata;
+using Windows.UI.Core;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -30,7 +33,34 @@ namespace Lamna
             this.InitializeComponent();
             SizeChanged += MainPage_SizeChanged;
 
+            if (ApiInformation.IsTypePresent(typeof(StatusBar).FullName))
+            {
+                StatusBar.GetForCurrentView().HideAsync();
+            }
+
+            RootFrame.Navigated += RootFrame_Navigated;
+            SystemNavigationManager.GetForCurrentView().BackRequested += BackButtonBackRequested; ;
+
+            ((App)App.Current).MainFrame = RootFrame;
+
             RootFrame.Navigate(typeof(Views.Home));
+
+
+        }
+
+        private void BackButtonBackRequested(object sender, BackRequestedEventArgs e)
+        {
+            if (RootFrame.CanGoBack)
+            {
+                RootFrame.GoBack();
+                e.Handled = true;
+            }
+        }
+
+        private void RootFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = 
+                RootFrame.CanGoBack ? AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
         }
 
         private void MainPage_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -57,7 +87,7 @@ namespace Lamna
             LoginAnimation.Stop();
 
             ContentAnimation.To = 20;
-            ContentAnimation.From = ContentTransform.TranslateY;
+            ContentAnimation.From = Window.Current.Bounds.Height;
 
             LockScreenAnimation.To = - Window.Current.Bounds.Height + 20;
             LockScreenAnimation.From = 0;

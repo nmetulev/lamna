@@ -8,6 +8,8 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Foundation.Metadata;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -23,6 +25,7 @@ namespace Lamna
     /// </summary>
     sealed partial class App : Application
     {
+        public Frame MainFrame;
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -32,6 +35,8 @@ namespace Lamna
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+           
         }
 
         /// <summary>
