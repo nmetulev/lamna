@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lamna.Data;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,9 +23,24 @@ namespace Lamna.Views
     /// </summary>
     public sealed partial class LocationView : Page
     {
+        public HomeLocation HomeLocation{ get; set; }
+
         public LocationView()
         {
             this.InitializeComponent();
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            if (e.Parameter != null)
+            {
+                HomeLocation = e.Parameter as HomeLocation;
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            ((App)App.Current).MainFrame.Navigate(typeof(CameraView), HomeLocation);
         }
     }
 }

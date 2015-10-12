@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<grammar xml:lang="en-US" root="masterRule"
+tag-format="semantics/1.0" version="1.0"
+xmlns="http://www.w3.org/2001/06/grammar">
+
+
+
+  <rule id="masterRule">
+    <one-of>
+      <item>
+        <ruleref uri="#SpecifyLocation" />
+        <tag>out.KEY_LOCATION=rules.latest(); </tag>
+      </item>
+
+      <item>
+        <ruleref uri="#AddNote" />
+        <tag>out.KEY_NOTE=rules.latest(); </tag>
+      </item>
+
+      <item>
+        <ruleref uri="#SpecifyDefect" />
+        <tag>out.KEY_DEFECT=rules.latest(); </tag>
+      </item>
+    </one-of>
+    
+  </rule>
+
+
+  <rule id="AddNote">
+    <one-of>
+      <item>add note</item>
+
+      <item>note this</item>
+
+      <item>
+        take
+        <item repeat="0-1">a</item>
+        note
+      </item>
+    </one-of>
+  </rule>
+
+  <rule id="SpecifyLocation">
+    <one-of>
+
+      <item>
+        location
+        <item><ruleref uri="#location" /></item>
+      </item>
+      
+      <item>
+        <item repeat="0-1">now</item>
+        this is
+        <item repeat="0-1">the</item>
+        <item><ruleref uri="#location" /></item>
+      </item>
+
+      <item>
+        <item repeat="0-1">now</item>
+        <one-of>
+          <item>I'm in</item>
+          <item>We're in</item>
+        </one-of>
+        <item repeat="0-1">the</item>
+        <item><ruleref uri="#location" /></item>
+      </item>
+    </one-of>
+  </rule>
+
+  <rule id="location">
+    <one-of>
+      <item>
+        roof <tag> out="Roof"; </tag>
+      </item>
+      <item>
+        exterior <tag> out="Exterior"; </tag>
+      </item>
+      <item>
+        garage <tag> out="Garage"; </tag>
+      </item>
+      <item>
+        kitchen <tag> out="Kitchen"; </tag>
+      </item>
+      <item>
+        bathroom <tag> out="Bathroom"; </tag>
+      </item>
+      <item>
+        bath <tag> out="Bathroom"; </tag>
+      </item>
+      <item>
+        interior <tag> out="Interior"; </tag>
+      </item>
+    </one-of>
+  </rule>
+
+
+
+  <rule id="SpecifyDefect">
+    <one-of>
+
+      <item>
+        defect
+        <item>
+          <ruleref uri="#defect" />
+        </item>
+      </item>
+
+      <item>
+        <item repeat="0-1">there</item>
+        <one-of>
+          <item>are</item>
+          <item>is</item>
+        </one-of>
+        <item repeat="0-1">a</item>
+        <item>
+          <ruleref uri="#defect" />
+        </item>
+        <one-of>
+          <item>defect</item>
+          <item>defects</item>
+        </one-of>
+      </item>
+    </one-of>
+  </rule>
+
+  <rule id="defect">
+    <one-of>
+      <item>
+        no <tag>out="None";</tag>
+      </item>
+      <item>
+        none <tag>out="None";</tag>
+      </item>
+      <item>
+        minor <tag>out="Minor";</tag>
+      </item>
+      <item>
+        little <tag>out="Minor";</tag>
+      </item>
+      <item>
+        major <tag>out="Major";</tag>
+      </item>
+      <item>
+        large <tag>out="Major";</tag>
+      </item>
+    </one-of>
+  </rule>
+
+</grammar>

@@ -67,16 +67,18 @@ namespace Lamna
         {
             if (locked)
             {
-                ContentTransform.TranslateY = e.NewSize.Height;
+                //ContentTransform.TranslateY = e.NewSize.Height;
                 LockScreenTransform.TranslateY = 0;
             }
             else
             {
-                ContentTransform.TranslateY = 20;
+               // ContentTransform.TranslateY = 20;
                 LockScreenTransform.TranslateY = -e.NewSize.Height + 20;
             }
 
             Content.Height = e.NewSize.Height - 20;
+            ContentTransform.CenterX = e.NewSize.Width / 2;
+            ContentTransform.CenterY = e.NewSize.Height / 2;
             
         }
 
@@ -86,8 +88,14 @@ namespace Lamna
 
             LoginAnimation.Stop();
 
-            ContentAnimation.To = 20;
-            ContentAnimation.From = Window.Current.Bounds.Height;
+            //ContentAnimation.To = 20;
+            //ContentAnimation.From = Window.Current.Bounds.Height;
+
+            ContentZoomXAnimation.To = ContentZoomYAnimation.To = 1;
+            ContentZoomXAnimation.From = ContentZoomYAnimation.From = 0.8;
+
+            ContentShadeAnimation.To = 0;
+            ContentShadeAnimation.From = 1;
 
             LockScreenAnimation.To = - Window.Current.Bounds.Height + 20;
             LockScreenAnimation.From = 0;
@@ -99,7 +107,12 @@ namespace Lamna
             SkyAnimation.To = 1;
             SkyAnimation.From = 0;
 
-            LockScreenAnimation.Duration = ContentAnimation.Duration = SkyAnimation.Duration = TimeSpan.FromMilliseconds(500);
+            LockScreenAnimation.Duration =
+            //ContentAnimation.Duration =
+            SkyAnimation.Duration =
+            ContentZoomXAnimation.Duration =
+            ContentZoomYAnimation.Duration =
+            ContentZoomYAnimation.Duration = TimeSpan.FromMilliseconds(500);
 
             LoginAnimation.Begin();
         }
@@ -112,8 +125,14 @@ namespace Lamna
 
                 LoginAnimation.Stop();
 
-                ContentAnimation.To = Window.Current.Bounds.Height;
-                ContentAnimation.From = 20;
+                //ContentAnimation.To = Window.Current.Bounds.Height;
+                //ContentAnimation.From = 20;
+
+                ContentZoomXAnimation.To = ContentZoomYAnimation.To = 0.8;
+                ContentZoomXAnimation.From = ContentZoomYAnimation.From = 1;
+
+                ContentShadeAnimation.To = 1;
+                ContentShadeAnimation.From = 0;
 
                 LockScreenAnimation.To = 0;
                 LockScreenAnimation.From = -Window.Current.Bounds.Height + 20;
@@ -125,7 +144,12 @@ namespace Lamna
                 SkyAnimation.To = 0;
                 SkyAnimation.From = 1;
 
-                LockScreenAnimation.Duration = ContentAnimation.Duration = SkyAnimation.Duration = TimeSpan.FromMilliseconds(500);
+                LockScreenAnimation.Duration =
+                //ContentAnimation.Duration =
+                SkyAnimation.Duration =
+                ContentZoomXAnimation.Duration =
+                ContentZoomYAnimation.Duration =
+                ContentZoomYAnimation.Duration = TimeSpan.FromMilliseconds(500);
 
                 LoginAnimation.Begin();
             }

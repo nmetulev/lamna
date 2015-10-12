@@ -10,7 +10,17 @@
     <Grid Background="#FF2C142A">
         <Grid.Resources>
             <Storyboard x:Name="LoginAnimation">
-                <DoubleAnimation x:Name="ContentAnimation" Storyboard.TargetProperty="TranslateY" Storyboard.TargetName="ContentTransform">
+                <!--<DoubleAnimation x:Name="ContentAnimation" Storyboard.TargetProperty="TranslateY" Storyboard.TargetName="ContentTransform">
+                    <DoubleAnimation.EasingFunction>
+                        <ExponentialEase Exponent="3" EasingMode="EaseOut" ></ExponentialEase>
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>-->
+                <DoubleAnimation x:Name="ContentZoomXAnimation" Storyboard.TargetProperty="ScaleX" Storyboard.TargetName="ContentTransform">
+                    <DoubleAnimation.EasingFunction>
+                        <ExponentialEase Exponent="3" EasingMode="EaseOut" ></ExponentialEase>
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>
+                <DoubleAnimation x:Name="ContentZoomYAnimation" Storyboard.TargetProperty="ScaleY" Storyboard.TargetName="ContentTransform">
                     <DoubleAnimation.EasingFunction>
                         <ExponentialEase Exponent="3" EasingMode="EaseOut" ></ExponentialEase>
                     </DoubleAnimation.EasingFunction>
@@ -30,8 +40,23 @@
                         <ExponentialEase Exponent="3" EasingMode="EaseOut" ></ExponentialEase>
                     </DoubleAnimation.EasingFunction>
                 </DoubleAnimation>
+                <DoubleAnimation x:Name="ContentShadeAnimation" Storyboard.TargetProperty="Opacity" Storyboard.TargetName="ContentShade">
+                    <DoubleAnimation.EasingFunction>
+                        <ExponentialEase Exponent="3" EasingMode="EaseOut" ></ExponentialEase>
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>
             </Storyboard>
         </Grid.Resources>
+
+        <Grid x:Name="Content" VerticalAlignment="Bottom">
+            <Frame x:Name="RootFrame"></Frame>
+            <Grid.RenderTransform>
+                <CompositeTransform x:Name="ContentTransform"></CompositeTransform>
+            </Grid.RenderTransform>
+        </Grid>
+        
+        <Border x:Name="ContentShade" Opacity="1" Background="#FF000000" IsHitTestVisible="False"></Border>
+
         <Grid x:Name="LockScreen" Background="#FFFDDCC8">
             <Viewbox Stretch="UniformToFill" VerticalAlignment="Bottom" HorizontalAlignment="Center">
                 <Grid  Width="1096" Height="780"  >
@@ -61,15 +86,15 @@
             <RelativePanel>
                 <Button Content="Login" Click="Button_Click" Foreground="White"></Button>
             </RelativePanel>
+
+            <!--<Grid Height="20" VerticalAlignment="Bottom" Background="#E52C142A">
+                <TextBlock Height="20" Text="Log Out" Margin="10,0,0,0"></TextBlock>
+            </Grid>-->
+            
             <Grid.RenderTransform>
                 <CompositeTransform x:Name="LockScreenTransform"></CompositeTransform>
             </Grid.RenderTransform>
         </Grid>
-        <Border x:Name="Content" VerticalAlignment="Top">
-            <Frame x:Name="RootFrame"></Frame>
-            <Border.RenderTransform>
-                <CompositeTransform x:Name="ContentTransform"></CompositeTransform>
-            </Border.RenderTransform>
-        </Border>
+        
     </Grid>
 </Page>

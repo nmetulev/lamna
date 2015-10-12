@@ -7,6 +7,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <Grid Background="#FFFDDCC8">
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition />
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState x:Name="LongState">
@@ -33,7 +38,9 @@
             <RowDefinition Height="*"></RowDefinition>
         </Grid.RowDefinitions>
         <Border Background="{StaticResource DarkColor1}" BorderBrush="{StaticResource LightColor1}" BorderThickness="0,0,0,1">
-            <TextBlock HorizontalAlignment="Center" x:Name="NameText" Text="Metulev Family" Margin="5" Foreground="#FFFF6D40" FontSize="20" ></TextBlock>
+            <Button Click="Button_Click">
+                <TextBlock HorizontalAlignment="Center" x:Name="NameText" Text="Metulev Family" Margin="5" Foreground="#FFFF6D40" FontSize="20" ></TextBlock>
+            </Button>
         </Border>
         <Pivot x:Name="MainPivot" Foreground="#FFFF6D40" Grid.Row="1" Title="" Style="{StaticResource LamnaPivotStyle}">
             <Pivot.HeaderTemplate>

@@ -15,6 +15,7 @@ namespace Lamna.Data
             this.NormalizedAnchorPoint = new Point(0.5, 1);
             this.FamilyName = FamilyName;
             this.Address = Address;
+            this.Pictures = new List<LocationPicture>();
             Location = new Geopoint(new BasicGeoposition()
             {
                 Latitude = Latitude,
@@ -26,5 +27,6 @@ namespace Lamna.Data
         public string Address { get; set; }
         public Geopoint Location { get; set; }
         public Point NormalizedAnchorPoint { get; set; }
+        public List<LocationPicture> Pictures { get; set; }
     }
 }
