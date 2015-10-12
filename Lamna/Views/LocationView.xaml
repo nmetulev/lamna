@@ -119,5 +119,9 @@
             </PivotItem>
             <!--#endregion-->
         </Pivot>
+        <Canvas Grid.RowSpan="2" x:Name="canvasce"></Canvas>
+        <InkCanvas x:Name="Inker" Grid.RowSpan="2"></InkCanvas>
+        
+        <Button Content="Recognize" Click="Button_Click_1" HorizontalAlignment="Right"></Button>
     </Grid>
 </Page>
