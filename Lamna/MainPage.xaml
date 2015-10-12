@@ -58,6 +58,27 @@
         <Border x:Name="ContentShade" Opacity="1" Background="#FF000000" IsHitTestVisible="False"></Border>
 
         <Grid x:Name="LockScreen" Background="#FFFDDCC8">
+
+            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right" Margin="40">
+
+                <TextBlock FontSize="40" HorizontalAlignment="Right" Text="STILL NEED TO DO"></TextBlock>
+                <TextBlock HorizontalAlignment="Right">Windows Hello</TextBlock>
+                <TextBlock HorizontalAlignment="Right">Data Model</TextBlock>
+                <TextBlock HorizontalAlignment="Right">Data read/write to disk</TextBlock>
+                <TextBlock HorizontalAlignment="Right">Rich Note taking (Voice)</TextBlock>
+                <TextBlock HorizontalAlignment="Right">Details Page - Populate</TextBlock>
+                <TextBlock HorizontalAlignment="Right">Band integration</TextBlock>
+                <TextBlock HorizontalAlignment="Right">Map page responsive</TextBlock>
+                <TextBlock HorizontalAlignment="Right">Details page responsive</TextBlock>
+                <TextBlock HorizontalAlignment="Right">Camera page responsive</TextBlock>
+                <TextBlock HorizontalAlignment="Right">Map polish</TextBlock>
+                <TextBlock HorizontalAlignment="Right">Details polish</TextBlock>
+                <TextBlock HorizontalAlignment="Right">Camera polish</TextBlock>
+                <TextBlock HorizontalAlignment="Right">Camera Rotation fix</TextBlock>
+                <TextBlock HorizontalAlignment="Right">Office 365 integration (nice to have)</TextBlock>
+
+            </StackPanel>
+
             <Viewbox Stretch="UniformToFill" VerticalAlignment="Bottom" HorizontalAlignment="Center">
                 <Grid  Width="1096" Height="780"  >
                     <Border x:Name="Sky" Opacity="0" Background="#B2000000" ></Border>
