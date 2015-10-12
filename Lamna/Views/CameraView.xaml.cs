@@ -1,12 +1,9 @@
 ﻿using Lamna.Data;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,7 +11,6 @@ using Windows.ApplicationModel;
 using Windows.Devices.Enumeration;
 using Windows.Devices.Sensors;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.Foundation.Metadata;
 using Windows.Graphics.Display;
 using Windows.Graphics.Imaging;
@@ -30,10 +26,9 @@ using Windows.System.Display;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
@@ -176,6 +171,10 @@ namespace Lamna.Views
                 HomeLocation = e.Parameter as HomeLocation;
             }
 
+            Inker.InkPresenter.InputDeviceTypes = 
+                                CoreInputDeviceTypes.Pen | 
+                                CoreInputDeviceTypes.Touch | 
+                                CoreInputDeviceTypes.Mouse;
         }
 
 
@@ -769,24 +768,14 @@ namespace Lamna.Views
             });
         }
 
+        private string _currentGuid;
         /// <summary>
         /// Takes a photo to a StorageFile and adds rotation metadata to it
         /// </summary>
         /// <returns></returns>
         private async Task TakePhotoAsync()
         {
-            LocationPicture pic = new LocationPicture();
-            pic.ID = Guid.NewGuid().ToString();
-            pic.Note = noteTextContent;
-            if (!string.IsNullOrWhiteSpace(locationTextContent))
-            {
-                pic.Location = (LocationEnumaration)Enum.Parse(typeof(LocationEnumaration), locationTextContent);
-            }
-            if(!string.IsNullOrWhiteSpace(defectTextContent))
-            {
-                pic.Defect = (DefectEnumeration)Enum.Parse(typeof(DefectEnumeration), defectTextContent);
-            }
-
+            _currentGuid = Guid.NewGuid().ToString();
             var stream = new InMemoryRandomAccessStream();
 
             try
@@ -797,22 +786,62 @@ namespace Lamna.Views
 
                 var photoOrientation = ConvertOrientationToPhotoOrientation(GetCameraOrientation());
 
-                await ReencodeAndSavePhotoAsync(stream, photoOrientation, pic.ID + ".jpg");
-
-                DefectTextContent = "";
-                NoteTextContent = "";
+                await ReencodeAndSavePhotoAsync(stream, photoOrientation, _currentGuid + ".jpg");
 
                 FlashStoryboard.Stop();
                 FlashStoryboard.Begin();
 
-                if (HomeLocation != null) HomeLocation.Pictures.Add(pic);
+                PreviewImage.Source = new BitmapImage(new Uri("ms-appdata:///local/" + _currentGuid + ".jpg"));
+                PreviewContainer.Visibility = Visibility.Visible;
+
+                //if (HomeLocation != null) HomeLocation.Pictures.Add(pic);
             }
             catch (Exception ex)
             {
                 // File I/O errors are reported as exceptions
                 Debug.WriteLine("Exception when taking a photo: {0}", ex.ToString());
             }
+
+        }
+
+
+        private void CancelPreviewClicked(object sender, RoutedEventArgs e)
+        {
+            PreviewContainer.Visibility = Visibility.Collapsed;
+            _currentGuid = null;
+            Inker.InkPresenter.StrokeContainer.Clear();
+            // TODO delete saved image
+        }
+
+        private async void SavePreviewClicked(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(_currentGuid))
+            {
+                LocationPicture pic = new LocationPicture();
+                pic.ID = _currentGuid;
+                pic.Note = noteTextContent;
+                if (!string.IsNullOrWhiteSpace(locationTextContent))
+                {
+                    pic.Location = (LocationEnumaration)Enum.Parse(typeof(LocationEnumaration), locationTextContent);
+                }
+                if (!string.IsNullOrWhiteSpace(defectTextContent))
+                {
+                    pic.Defect = (DefectEnumeration)Enum.Parse(typeof(DefectEnumeration), defectTextContent);
+                }
+
+                _currentGuid = null;
+
+
+                DefectTextContent = "";
+                NoteTextContent = "";
+
+                await SaveInk(pic.ID);
+
+            }
             
+            PreviewContainer.Visibility = Visibility.Collapsed;
+
+
         }
 
         /// <summary>
@@ -1039,9 +1068,7 @@ namespace Lamna.Views
                 var decoder = await BitmapDecoder.CreateAsync(inputStream);
                 var localFolder = ApplicationData.Current.LocalFolder;
 
-                
-
-                var file = await localFolder.CreateFileAsync(filename, CreationCollisionOption.GenerateUniqueName);
+                var file = await localFolder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
 
                 using (var outputStream = await file.OpenAsync(FileAccessMode.ReadWrite))
                 {
@@ -1199,5 +1226,26 @@ namespace Lamna.Views
         }
 
         #endregion Rotation helpers
+
+        #region Inker
+
+        private async Task SaveInk(string filename)
+        {
+            var localFolder = ApplicationData.Current.LocalFolder;
+            var file = await localFolder.CreateFileAsync(filename + ".gif", CreationCollisionOption.ReplaceExisting);
+
+            if (file != null)
+            {
+                using (var stream = await file.OpenAsync(FileAccessMode.ReadWrite))
+                {
+                    await Inker.InkPresenter.StrokeContainer.SaveAsync(stream);
+                    Inker.InkPresenter.StrokeContainer.Clear();
+                }
+            }
+
+        }
+
+        #endregion
+
     }
 }
