@@ -29,12 +29,17 @@ namespace Lamna.Views
     public sealed partial class LocationView : Page
     {
         public HomeLocation HomeLocation{ get; set; }
+        DispatcherTimer timer;
 
         public LocationView()
         {
             this.InitializeComponent();
-
+            timer = new DispatcherTimer();
+            timer.Tick += Timer_Tick;
+            timer.Interval = TimeSpan.FromSeconds(3);
         }
+
+        
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -44,11 +49,12 @@ namespace Lamna.Views
             }
 
             InitializeInker();
+            
         }
 
         private void InitializeInker()
         {
-            Inker.InkPresenter.InputDeviceTypes = Windows.UI.Core.CoreInputDeviceTypes.Mouse;
+            Inker.InkPresenter.InputDeviceTypes = Windows.UI.Core.CoreInputDeviceTypes.Pen;
 
             var drawingAttributes = new InkDrawingAttributes
             {
@@ -61,11 +67,46 @@ namespace Lamna.Views
             Inker.InkPresenter.UpdateDefaultDrawingAttributes(drawingAttributes);
             Inker.InkPresenter.StrokesCollected += InkPresenter_StrokesCollected;
         }
+        
+        
+        private void Root_PointerEntered(object sender, PointerRoutedEventArgs e)
+        {
+            DecideInputMethod(e.Pointer);
+        }
+
+
+        private void Root_PointerMoved(object sender, PointerRoutedEventArgs e)
+        {
+            DecideInputMethod(e.Pointer);
+        }
+
+        private bool InkerActive = false;
+
+        private void DecideInputMethod(Pointer pointer)
+        {
+            if (pointer.PointerDeviceType == Windows.Devices.Input.PointerDeviceType.Pen && !InkerActive)
+            {
+                // enable Inker
+                InkerActive = true;
+                InkerContainer.Visibility = Visibility.Visible;
+            }
+            else if (pointer.PointerDeviceType != Windows.Devices.Input.PointerDeviceType.Pen && InkerActive)
+            {
+                // disable Inker
+                InkerActive = false;
+                RecognizeInkerText();
+                timer.Stop();
+                InkerContainer.Visibility = Visibility.Collapsed;
+
+            }
+        }
 
         private async Task RecognizeInkerText()
         {
             var inkRecognizer = new InkRecognizerContainer();
             var recognitionResults = await inkRecognizer.RecognizeAsync(Inker.InkPresenter.StrokeContainer, InkRecognitionTarget.All);
+
+            List<TextBox> boxes = new List<TextBox>();
 
             foreach (var result in recognitionResults)
             {
@@ -75,17 +116,17 @@ namespace Lamna.Views
                         new Size(result.BoundingRect.Width, result.BoundingRect.Height)), 
                     this));
 
-                //var elipse = new Ellipse();
-                //elipse.Height = 2;
-                //elipse.Width = 2;
-                //elipse.Fill = new SolidColorBrush(Colors.Red);
-                //Canvas.SetLeft(elipse, result.BoundingRect.X - 1);
-                //Canvas.SetTop(elipse, result.BoundingRect.Y - 1);
-                //canvasce.Children.Add(elipse);
-
                 TextBox box = elements.Where(el => el is TextBox && (el as TextBox).IsEnabled).First() as TextBox;
 
-                if (box != null) box.Text = result.GetTextCandidates().FirstOrDefault();
+                if (box != null)
+                {
+                    if (!boxes.Contains(box))
+                    {
+                        boxes.Add(box);
+                        box.Text = "";
+                    }
+                    box.Text += " " + result.GetTextCandidates().FirstOrDefault().Trim();
+                }
             }
 
             Inker.InkPresenter.StrokeContainer.Clear();
@@ -94,18 +135,22 @@ namespace Lamna.Views
 
         private void InkPresenter_StrokesCollected(InkPresenter sender, InkStrokesCollectedEventArgs args)
         {
-            Debug.WriteLine("StrokesCollected");
+            timer.Start();
         }
-        
+
+        private void Timer_Tick(object sender, object e)
+        {
+            timer.Stop();
+            RecognizeInkerText();
+        }
+
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             ((App)App.Current).MainFrame.Navigate(typeof(CameraView), HomeLocation);
         }
+        
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            RecognizeInkerText();
-        }
+        
     }
 }

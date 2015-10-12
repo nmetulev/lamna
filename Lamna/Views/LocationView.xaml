@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    <Grid Background="#FFFDDCC8">
+    <Grid Background="#FFFDDCC8" x:Name="Root" PointerEntered="Root_PointerEntered" PointerMoved="Root_PointerMoved" >
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <EntranceThemeTransition />
@@ -119,9 +119,9 @@
             </PivotItem>
             <!--#endregion-->
         </Pivot>
-        <Canvas Grid.RowSpan="2" x:Name="canvasce"></Canvas>
-        <InkCanvas x:Name="Inker" Grid.RowSpan="2"></InkCanvas>
-        
-        <Button Content="Recognize" Click="Button_Click_1" HorizontalAlignment="Right"></Button>
+
+        <Grid x:Name="InkerContainer" Grid.RowSpan="2" Visibility="Collapsed">
+            <InkCanvas x:Name="Inker" ></InkCanvas>
+        </Grid>
     </Grid>
 </Page>
