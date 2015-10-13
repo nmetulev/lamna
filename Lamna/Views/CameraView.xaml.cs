@@ -937,13 +937,13 @@ namespace Lamna.Views
         private async Task SetupUiAsync()
         {
             // Attempt to lock page to landscape orientation to prevent the CaptureElement from rotating, as this gives a better experience
-            DisplayInformation.AutoRotationPreferences = DisplayOrientations.Landscape;
+          //  DisplayInformation.AutoRotationPreferences = DisplayOrientations.Landscape;
 
             // Hide the status bar
-            if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
-            {
-                await Windows.UI.ViewManagement.StatusBar.GetForCurrentView().HideAsync();
-            }
+            //if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
+            //{
+            //    await Windows.UI.ViewManagement.StatusBar.GetForCurrentView().HideAsync();
+            //}
 
             // Populate orientation variables with the current state
             _displayOrientation = _displayInformation.CurrentOrientation;
@@ -964,13 +964,13 @@ namespace Lamna.Views
             UnregisterEventHandlers();
 
             // Show the status bar
-            if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
-            {
-                await Windows.UI.ViewManagement.StatusBar.GetForCurrentView().ShowAsync();
-            }
+            //if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
+            //{
+            //    await Windows.UI.ViewManagement.StatusBar.GetForCurrentView().ShowAsync();
+            //}
 
             // Revert orientation preferences
-            DisplayInformation.AutoRotationPreferences = DisplayOrientations.None;
+           // DisplayInformation.AutoRotationPreferences = DisplayOrientations.None;
         }
 
         /// <summary>

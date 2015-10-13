@@ -97,6 +97,8 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Data\Enums.cs" />
+    <Compile Include="Data\FileService\FileHelper.cs" />
+    <Compile Include="Data\FileService\FileService.cs" />
     <Compile Include="Data\HomeLocation.cs" />
     <Compile Include="Data\LocationPicture.cs" />
     <Compile Include="MainPage.xaml.cs">

@@ -74,7 +74,6 @@
                 <TextBlock HorizontalAlignment="Right">Map polish</TextBlock>
                 <TextBlock HorizontalAlignment="Right">Details polish</TextBlock>
                 <TextBlock HorizontalAlignment="Right">Camera polish</TextBlock>
-                <TextBlock HorizontalAlignment="Right">Camera Rotation fix</TextBlock>
                 <TextBlock HorizontalAlignment="Right">Office 365 integration (nice to have)</TextBlock>
 
             </StackPanel>
