@@ -99,7 +99,7 @@
     <Compile Include="Data\Enums.cs" />
     <Compile Include="Data\FileService\FileHelper.cs" />
     <Compile Include="Data\FileService\FileService.cs" />
-    <Compile Include="Data\HomeLocation.cs" />
+    <Compile Include="Data\Appointment.cs" />
     <Compile Include="Data\LocationPicture.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -109,11 +109,11 @@
     <Compile Include="Views\CameraView.xaml.cs">
       <DependentUpon>CameraView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Home.xaml.cs">
-      <DependentUpon>Home.xaml</DependentUpon>
+    <Compile Include="Views\HomeView.xaml.cs">
+      <DependentUpon>HomeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\LocationView.xaml.cs">
-      <DependentUpon>LocationView.xaml</DependentUpon>
+    <Compile Include="Views\AppointmentView.xaml.cs">
+      <DependentUpon>AppointmentView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -155,11 +155,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Home.xaml">
+    <Page Include="Views\HomeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\LocationView.xaml">
+    <Page Include="Views\AppointmentView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

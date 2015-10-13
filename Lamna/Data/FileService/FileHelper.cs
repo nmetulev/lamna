@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TODOAdaptiveUISample.Services.FileService
+namespace Lamna.Data
 {
     class FileHelper
     {
@@ -54,7 +55,7 @@ namespace TODOAdaptiveUISample.Services.FileService
                 var _Result = Deserialize<T>(_String);
                 return _Result;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw;
             }
@@ -172,9 +173,45 @@ namespace TODOAdaptiveUISample.Services.FileService
 
         private T Deserialize<T>(string json)
         {
-            return JsonConvert.DeserializeObject<T>(json);
+            
+            return JsonConvert.DeserializeObject<T>(json, new GeopointConverter());
         }
 
+        
+
+
         public enum StorageStrategies { Local, Roaming, Temporary }
+    }
+
+    class GeopointConverter : JsonConverter
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            return (objectType == typeof(Windows.Devices.Geolocation.Geopoint));
+        }
+
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            JObject jo = JObject.Load(reader);
+            JObject geoposition = (JObject)jo["Position"];
+            double Latitude = (double)geoposition["Latitude"];
+            double Longitude = (double)geoposition["Longitude"];
+
+            return new Windows.Devices.Geolocation.Geopoint(new Windows.Devices.Geolocation.BasicGeoposition()
+            {
+                Latitude = Latitude,
+                Longitude = Longitude
+            });
+        }
+
+        public override bool CanWrite
+        {
+            get { return false; }
+        }
+
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

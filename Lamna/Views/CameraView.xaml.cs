@@ -1,4 +1,5 @@
 ﻿using Lamna.Data;
+using Microsoft.Graphics.Canvas;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -23,6 +24,7 @@ using Windows.Storage;
 using Windows.Storage.FileProperties;
 using Windows.Storage.Streams;
 using Windows.System.Display;
+using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -106,7 +108,7 @@ namespace Lamna.Views
 
         #endregion
 
-        private HomeLocation HomeLocation;
+        private Appointment Appointment;
 
         #region Constructor, lifecycle and navigation
 
@@ -136,6 +138,8 @@ namespace Lamna.Views
 
                 await CleanupSpechRecognizerAsync();
                 await CleanupNoteRecognizerAsync();
+
+                await DataSource.GetInstance().UpdateAppointmentsAsync();
 
                 deferral.Complete();
             }
@@ -168,7 +172,7 @@ namespace Lamna.Views
 
             if (e.Parameter != null)
             {
-                HomeLocation = e.Parameter as HomeLocation;
+                Appointment = await DataSource.GetInstance().GetAppointmentAsync(e.Parameter as string);
             }
 
             Inker.InkPresenter.InputDeviceTypes = 
@@ -188,6 +192,8 @@ namespace Lamna.Views
 
             await CleanupSpechRecognizerAsync();
             await CleanupNoteRecognizerAsync();
+
+            await DataSource.GetInstance().UpdateAppointmentsAsync();
         }
 
         #endregion Constructor, lifecycle and navigation
@@ -794,7 +800,7 @@ namespace Lamna.Views
                 PreviewImage.Source = new BitmapImage(new Uri("ms-appdata:///local/" + _currentGuid + ".jpg"));
                 PreviewContainer.Visibility = Visibility.Visible;
 
-                //if (HomeLocation != null) HomeLocation.Pictures.Add(pic);
+                //if (Appointment != null) Appointment.Pictures.Add(pic);
             }
             catch (Exception ex)
             {
@@ -819,6 +825,8 @@ namespace Lamna.Views
             {
                 LocationPicture pic = new LocationPicture();
                 pic.ID = _currentGuid;
+                pic.RawImageUri = "ms-appdata:///local/" + pic.ID + ".jpg";
+                pic.InkUri = "ms-appdata:///local/" + pic.ID + ".gif";
                 pic.Note = noteTextContent;
                 if (!string.IsNullOrWhiteSpace(locationTextContent))
                 {
@@ -835,13 +843,37 @@ namespace Lamna.Views
                 DefectTextContent = "";
                 NoteTextContent = "";
 
+                await RenderImageAsync(pic);
                 await SaveInk(pic.ID);
+                Appointment.Pictures.Add(pic);
 
             }
             
             PreviewContainer.Visibility = Visibility.Collapsed;
 
 
+        }
+
+        private async Task RenderImageAsync(LocationPicture pic)
+        {
+            CanvasDevice device = CanvasDevice.GetSharedDevice();
+            CanvasRenderTarget renderTarget = new CanvasRenderTarget(device, (int)Inker.ActualWidth, (int)Inker.ActualHeight, 96);
+
+            var image = await CanvasBitmap.LoadAsync(device, new Uri(pic.RawImageUri));
+
+            using (var ds = renderTarget.CreateDrawingSession())
+            {
+                ds.Clear(Colors.White);
+                ds.DrawImage(image, image.Bounds);
+                ds.DrawInk(Inker.InkPresenter.StrokeContainer.GetStrokes());
+            }
+
+            var filename = pic.ID + "_final.jpg";
+            var localFolder = ApplicationData.Current.LocalFolder;
+            var file = await localFolder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
+            using (var fileStream = await file.OpenAsync(FileAccessMode.ReadWrite))
+                await renderTarget.SaveAsync(fileStream, CanvasBitmapFileFormat.Jpeg, 1f);
+            pic.ImageUri = "ms-appdata:///local/" + filename;
         }
 
         /// <summary>
@@ -1234,7 +1266,7 @@ namespace Lamna.Views
             var localFolder = ApplicationData.Current.LocalFolder;
             var file = await localFolder.CreateFileAsync(filename + ".gif", CreationCollisionOption.ReplaceExisting);
 
-            if (file != null)
+            if (file != null && Inker.InkPresenter.StrokeContainer.GetStrokes().Count > 0)
             {
                 using (var stream = await file.OpenAsync(FileAccessMode.ReadWrite))
                 {

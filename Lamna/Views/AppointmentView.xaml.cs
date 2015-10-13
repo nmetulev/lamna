@@ -26,12 +26,12 @@ namespace Lamna.Views
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class LocationView : Page
+    public sealed partial class AppointmentView : Page
     {
-        public HomeLocation HomeLocation{ get; set; }
+        public Appointment Data{ get; set; }
         DispatcherTimer timer;
 
-        public LocationView()
+        public AppointmentView()
         {
             this.InitializeComponent();
             timer = new DispatcherTimer();
@@ -41,15 +41,20 @@ namespace Lamna.Views
 
         
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
             if (e.Parameter != null)
             {
-                HomeLocation = e.Parameter as HomeLocation;
+                Data = await DataSource.GetInstance().GetAppointmentAsync(e.Parameter as string) ;
             }
 
             InitializeInker();
             
+        }
+
+        protected async override void OnNavigatingFrom(NavigatingCancelEventArgs e)
+        {
+            await DataSource.GetInstance().UpdateAppointmentsAsync();
         }
 
         private void InitializeInker()
@@ -147,7 +152,7 @@ namespace Lamna.Views
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            ((App)App.Current).MainFrame.Navigate(typeof(CameraView), HomeLocation);
+            ((App)App.Current).MainFrame.Navigate(typeof(CameraView), Data.Id);
         }
         
 

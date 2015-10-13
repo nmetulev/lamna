@@ -43,7 +43,7 @@ namespace Lamna
 
             ((App)App.Current).MainFrame = RootFrame;
 
-            RootFrame.Navigate(typeof(Views.Home));
+            RootFrame.Navigate(typeof(Views.HomeView));
 
 
         }

@@ -1,8 +1,9 @@
 ﻿<Page
-    x:Class="Lamna.Views.LocationView"
+    x:Class="Lamna.Views.AppointmentView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Lamna.Views"
+    xmlns:data="using:Lamna.Data"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
@@ -39,7 +40,7 @@
         </Grid.RowDefinitions>
         <Border Background="{StaticResource DarkColor1}" BorderBrush="{StaticResource LightColor1}" BorderThickness="0,0,0,1">
             <Button Click="Button_Click">
-                <TextBlock HorizontalAlignment="Center" x:Name="NameText" Text="Metulev Family" Margin="5" Foreground="#FFFF6D40" FontSize="20" ></TextBlock>
+                <TextBlock HorizontalAlignment="Center" x:Name="NameText" Text="{x:Bind Data.Address}" Margin="5" Foreground="#FFFF6D40" FontSize="20" ></TextBlock>
             </Button>
         </Border>
         <Pivot x:Name="MainPivot" Foreground="#FFFF6D40" Grid.Row="1" Title="" Style="{StaticResource LamnaPivotStyle}">
@@ -58,8 +59,8 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel>
                             <TextBox Header="ID" IsEnabled="False" Text="2347-75243529853245"></TextBox>
-                            <TextBox Header=" Customer" Text="Metulev Family"></TextBox>
-                            <TextBox Header="Property" Text="10351 NE 10th St, Bellevue WA 98004"></TextBox>
+                            <TextBox Header=" Customer" Text="{x:Bind Data.FamilyName, Mode=TwoWay}"></TextBox>
+                            <TextBox Header="Property" Text="{x:Bind Data.Address, Mode=TwoWay}"></TextBox>
                         </StackPanel>
                         <StackPanel Grid.Column="1">
                            
@@ -88,7 +89,15 @@
             <!--#region PivotItems-->
             
             <PivotItem Header="Roof and Exterior">
-
+                <ListView ItemsSource="{x:Bind Data.Pictures}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="data:LocationPicture">
+                            <Grid>
+                                <Image Height="300" Width="400" Source="{x:Bind ImageUri}"></Image>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </PivotItem>
             <PivotItem Header="Garage">
 
