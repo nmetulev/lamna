@@ -155,7 +155,22 @@ namespace Lamna.Views
             ((App)App.Current).MainFrame.Navigate(typeof(CameraView), Data.Id);
         }
         
+        private void GridView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var pic = e.ClickedItem as LocationPicture;
+            Editor.Picture = pic;
+            EditorContainer.Visibility = Visibility.Visible;
+        }
 
-        
+        private void DiscardPictureClicked(object sender, RoutedEventArgs e)
+        {
+            EditorContainer.Visibility = Visibility.Collapsed;
+        }
+
+        private void SavePictureClicked(object sender, RoutedEventArgs e)
+        {
+            EditorContainer.Visibility = Visibility.Collapsed;
+            Editor.SavePicture();
+        }
     }
 }

@@ -872,7 +872,12 @@ namespace Lamna.Views
             var localFolder = ApplicationData.Current.LocalFolder;
             var file = await localFolder.CreateFileAsync(filename, CreationCollisionOption.ReplaceExisting);
             using (var fileStream = await file.OpenAsync(FileAccessMode.ReadWrite))
+            {
                 await renderTarget.SaveAsync(fileStream, CanvasBitmapFileFormat.Jpeg, 1f);
+                fileStream.Dispose();
+            }
+
+            
             pic.ImageUri = "ms-appdata:///local/" + filename;
         }
 

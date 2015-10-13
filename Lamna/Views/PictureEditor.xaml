@@ -1,0 +1,23 @@
+﻿<UserControl
+    x:Class="Lamna.Views.PictureEditor"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Lamna.Views"
+    xmlns:inkTools="using:Microsoft.Labs.InkToolbarControl"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Grid Background="Black">
+        <Viewbox Stretch="Uniform">
+            <Grid>
+                <Image x:Name="Imager"></Image>
+                <InkCanvas x:Name="Inker"></InkCanvas>
+            </Grid>
+        </Viewbox>
+        <inkTools:InkToolbar TargetInkCanvas="{x:Bind Inker}" PenColor="#FFE61021" VerticalAlignment="Top" HorizontalAlignment="Right" Background="Black" PenSize="2, 3"></inkTools:InkToolbar>
+
+    </Grid>
+</UserControl>

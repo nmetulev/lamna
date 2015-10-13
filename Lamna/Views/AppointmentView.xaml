@@ -89,15 +89,20 @@
             <!--#region PivotItems-->
             
             <PivotItem Header="Roof and Exterior">
-                <ListView ItemsSource="{x:Bind Data.Pictures}">
-                    <ListView.ItemTemplate>
+                <GridView ItemsSource="{x:Bind Data.Pictures}" IsItemClickEnabled="True" SelectionMode="None" ItemClick="GridView_ItemClick">
+                    <GridView.ItemTemplate>
                         <DataTemplate x:DataType="data:LocationPicture">
                             <Grid>
-                                <Image Height="300" Width="400" Source="{x:Bind ImageUri}"></Image>
+                                <Image Width="240" Source="{x:Bind ImageUri, Mode=OneWay}"></Image>
                             </Grid>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    </GridView.ItemTemplate>
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <local:OrganizeCustomPanel VerticalAlignment="Top" />
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                </GridView>
             </PivotItem>
             <PivotItem Header="Garage">
 
@@ -132,5 +137,23 @@
         <Grid x:Name="InkerContainer" Grid.RowSpan="2" Visibility="Collapsed">
             <InkCanvas x:Name="Inker" ></InkCanvas>
         </Grid>
+
+        <Grid x:Name="EditorContainer" Grid.RowSpan="2" Visibility="Collapsed" >
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+
+            <local:PictureEditor x:Name="Editor" Margin="30"></local:PictureEditor>
+            
+            <Border Grid.Row="1" Height="50" Background="Black">
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                    <Button Foreground="White" Content="Discard" Margin="20, 5" Click="DiscardPictureClicked"></Button>
+                    <Button Foreground="White" Content="Save" Margin="20, 5" Click="SavePictureClicked"></Button>
+                </StackPanel>
+            </Border>
+        </Grid>
+        
     </Grid>
 </Page>

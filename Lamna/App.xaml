@@ -12,8 +12,7 @@
         <SolidColorBrush x:Key="LightColor1" Color="#FFF47E4C"></SolidColorBrush>
         <SolidColorBrush x:Key="LightColor2" Color="#FFF36D44"></SolidColorBrush>
         <SolidColorBrush x:Key="LightForeground" Color="#FFFF6D40"></SolidColorBrush>
-        
-        
+
         <Style x:Key="LamnaPivotStyle" TargetType="Pivot">
             <Setter Property="Margin" Value="0"/>
             <Setter Property="Padding" Value="0"/>
