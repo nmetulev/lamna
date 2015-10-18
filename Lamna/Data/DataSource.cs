@@ -1,19 +1,24 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace Lamna.Data
 {
     public class DataSource
     {
         const string cacheKey = "lamna_data";
+        const string userCacheKey = "lamna_user";
 
         static private DataSource source;
         private FileService _fileService;
 
         private List<Appointment> _appointments { get; set; }
+
+        private Account _user;
 
         static public DataSource GetInstance()
         {
@@ -27,6 +32,31 @@ namespace Lamna.Data
             _fileService = new FileService();
 
             
+        }
+
+        public Account GetUser()
+        {
+            if (_user != null) return _user;
+
+            object user;
+            ApplicationData.Current.LocalSettings.Values.TryGetValue(userCacheKey, out user);
+
+            if (user != null)
+            {
+                string userString = user as string;
+                _user = JsonConvert.DeserializeObject<Account>(userString);
+
+            }
+
+            return _user;
+        }
+
+        public void SaveUser(Account user)
+        {
+            string userString = JsonConvert.SerializeObject(user);
+            ApplicationData.Current.LocalSettings.Values.Remove(userCacheKey);
+            ApplicationData.Current.LocalSettings.Values.Add(userCacheKey, userString);
+            _user = user;
         }
 
         public async Task<List<Appointment>> GetAppointmentsAsync()

@@ -62,13 +62,12 @@
             <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right" Margin="40">
 
                 <TextBlock FontSize="40" HorizontalAlignment="Right" Text="STILL NEED TO DO"></TextBlock>
-                <TextBlock HorizontalAlignment="Right">Windows Hello</TextBlock>
                 <TextBlock HorizontalAlignment="Right">Cortana</TextBlock>
                 <TextBlock HorizontalAlignment="Right">Data Model</TextBlock>
                 <TextBlock HorizontalAlignment="Right">Create mock up data</TextBlock>
                 <TextBlock HorizontalAlignment="Right">Rich Note taking (Voice)</TextBlock>
                 <TextBlock HorizontalAlignment="Right">Details Page - Populate</TextBlock>
-                <TextBlock HorizontalAlignment="Right">Band integration</TextBlock>
+                <TextBlock HorizontalAlignment="Right">Band integration (mock up)</TextBlock>
                 <TextBlock HorizontalAlignment="Right">Map page responsive</TextBlock>
                 <TextBlock HorizontalAlignment="Right">Details page responsive</TextBlock>
                 <TextBlock HorizontalAlignment="Right">Camera page responsive</TextBlock>
@@ -78,6 +77,8 @@
                 <TextBlock HorizontalAlignment="Right">Office 365 integration (nice to have)</TextBlock>
 
             </StackPanel>
+
+            
 
             <Viewbox Stretch="UniformToFill" VerticalAlignment="Bottom" HorizontalAlignment="Center">
                 <Grid  Width="1096" Height="780"  >
@@ -104,9 +105,33 @@
             </Viewbox>
 
 
-            <RelativePanel>
-                <Button Content="Login" Click="Button_Click" Foreground="White"></Button>
-            </RelativePanel>
+
+            <Border HorizontalAlignment="Center" VerticalAlignment="Top" Padding="30" Background="#CC000000">
+
+                <!-- Sign in form elements -->
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="200" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="2" Text="Username: " HorizontalAlignment="Right" FontSize="20" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="White"/>
+                    <TextBox Grid.Row="2" Grid.Column="1"  x:Name="textbox_Username" Margin="0,10,0,0" />
+                    <TextBlock Grid.Row="3" Text="Password: " HorizontalAlignment="Right" FontSize="20" VerticalAlignment="Top" Margin="0,8,10,0" Foreground="White"/>
+                    <PasswordBox Grid.Row="3" Grid.Column="1" x:Name="passwordbox_Password" Margin="0,10,0,0" />
+                    <Button Grid.Row="4" Content="Sign In" Click="Button_SignIn_Click" HorizontalAlignment="Right" Grid.Column="1" Foreground="White"/>
+                    <Button Grid.Row="4" x:Name="button_PassportSignIn" Content="Sign In with Microsoft Passport" Click="Button_Passport_Click" Foreground="White" HorizontalAlignment="Left" Grid.Column="0" Grid.ColumnSpan="2"/>
+                    <TextBlock Grid.Row="5" x:Name="textblock_ErrorField" Foreground="Red" VerticalAlignment="Stretch" HorizontalAlignment="Center" Grid.ColumnSpan="2" />
+                </Grid>
+            </Border>
 
             <!--<Grid Height="20" VerticalAlignment="Bottom" Background="#E52C142A">
                 <TextBlock Height="20" Text="Log Out" Margin="10,0,0,0"></TextBlock>

@@ -96,6 +96,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Data\Account.cs" />
     <Compile Include="Data\Enums.cs" />
     <Compile Include="Data\FileService\FileHelper.cs" />
     <Compile Include="Data\FileService\FileService.cs" />
