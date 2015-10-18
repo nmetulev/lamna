@@ -1,6 +1,7 @@
 ﻿using Lamna.Data;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -9,6 +10,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Foundation.Metadata;
+using Windows.Media.SpeechRecognition;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -44,7 +46,7 @@ namespace Lamna
         /// will be used such as when the application is launched to open a specific file.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected async override void OnLaunched(LaunchActivatedEventArgs e)
         {
 
 #if DEBUG
@@ -83,6 +85,23 @@ namespace Lamna
             }
             // Ensure the current window is active
             Window.Current.Activate();
+
+            // Install VCD
+            try
+            {
+                var storageFile =
+                await Windows.Storage.StorageFile
+                .GetFileFromApplicationUriAsync(new Uri("ms-appx:///vcd.xml"));
+
+                await Windows.ApplicationModel.VoiceCommands.VoiceCommandDefinitionManager
+                    .InstallCommandDefinitionsFromStorageFileAsync(storageFile);
+
+                Debug.WriteLine("VCD installed");
+            }
+            catch
+            {
+                Debug.WriteLine("VCD installation failed");
+            }
         }
 
         /// <summary>
@@ -107,6 +126,52 @@ namespace Lamna
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+        protected override void OnActivated(IActivatedEventArgs e)
+        {
+            #region Activation Code
+            Frame rootFrame = Window.Current.Content as Frame;
+
+            if (rootFrame == null)
+            {
+                rootFrame = new Frame();
+                rootFrame.Language = Windows.Globalization.ApplicationLanguages.Languages[0];
+
+                rootFrame.NavigationFailed += OnNavigationFailed;
+
+                Window.Current.Content = rootFrame;
+            }
+            #endregion
+
+            if (e.Kind == Windows.ApplicationModel.Activation.ActivationKind.VoiceCommand)
+            {
+                var commandArgs = e as Windows.ApplicationModel.Activation.VoiceCommandActivatedEventArgs;
+                SpeechRecognitionResult speechRecognitionResult = commandArgs.Result;
+                string voiceCommandName = speechRecognitionResult.RulePath[0];
+
+                switch (voiceCommandName)
+                {
+                    case "startChat":
+                        {
+                            break;
+                        }
+                    default:
+                        {
+                            rootFrame.Navigate(typeof(MainPage));
+
+                            break;
+                        }
+                }
+            }
+
+            if (rootFrame.Content == null)
+            {
+                rootFrame.Navigate(typeof(MainPage), null);
+            }
+
+            // Ensure the current window is active
+            Window.Current.Activate();
         }
     }
 }

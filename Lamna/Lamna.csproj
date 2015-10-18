@@ -121,12 +121,8 @@
     <None Include="Lamna_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\sounds\start.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Assets\sounds\stop.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Assets\house.png" />
+    <Content Include="Assets\home.png" />
     <Content Include="credits.txt" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
@@ -139,7 +135,9 @@
     <Content Include="SRGS\SRGS_EN.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="vcd.xml" />
+    <Content Include="vcd.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -179,6 +177,10 @@
     <ProjectReference Include="..\Lamna.Data\Lamna.Data.csproj">
       <Project>{b79e48d4-0c20-4db9-9e39-3a53ed9e34d4}</Project>
       <Name>Lamna.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LamnaCortanaService\LamnaCortanaService.csproj">
+      <Project>{0aa704f5-eeb7-4e90-8478-dd3eb4cbe265}</Project>
+      <Name>LamnaCortanaService</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

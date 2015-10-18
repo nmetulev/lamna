@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Devices.Geolocation;
 using Windows.Storage;
 
 namespace Lamna.Data
@@ -95,7 +96,14 @@ namespace Lamna.Data
             return _fileService.WriteAsync<Appointment>(cacheKey, _appointments);
         }
 
-
+        public static Geopoint GetCurrentLocation()
+        {
+            return new Geopoint(new BasicGeoposition()
+            {
+                Latitude = 47.609097,
+                Longitude = -122.305031,
+            });
+        }
 
     }
 }

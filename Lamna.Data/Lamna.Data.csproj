@@ -121,6 +121,7 @@
     <Compile Include="FileService\FileHelper.cs" />
     <Compile Include="FileService\FileService.cs" />
     <Compile Include="LocationPicture.cs" />
+    <Compile Include="MapService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

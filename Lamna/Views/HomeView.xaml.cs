@@ -60,6 +60,7 @@ namespace Lamna.Views
             this.InitializeComponent();
 
             Map.MapServiceToken = DataSource.BingMapsKey;
+            Map.Style = MapStyle.AerialWithRoads;
         }
 
 
