@@ -58,6 +58,8 @@ namespace Lamna.Views
         public HomeView()
         {
             this.InitializeComponent();
+
+            Map.MapServiceToken = DataSource.BingMapsKey;
         }
 
 
