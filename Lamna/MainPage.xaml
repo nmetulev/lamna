@@ -74,6 +74,13 @@
                 <TextBlock HorizontalAlignment="Right">Details polish</TextBlock>
                 <TextBlock HorizontalAlignment="Right">Camera polish</TextBlock>
                 <TextBlock HorizontalAlignment="Right">Office 365 integration (nice to have)</TextBlock>
+                <TextBlock HorizontalAlignment="Right">Map Navigation</TextBlock>
+                <TextBlock HorizontalAlignment="Right">Start Camera with camera button</TextBlock>
+                <TextBlock HorizontalAlignment="Right">Air Gestures</TextBlock>
+                <TextBlock HorizontalAlignment="Right">Context - proximity</TextBlock>
+                <TextBlock HorizontalAlignment="Right">project oxford - object detection</TextBlock>
+                <TextBlock HorizontalAlignment="Right">project oxford - voice search</TextBlock>
+                <TextBlock HorizontalAlignment="Right">voice bing search</TextBlock>
 
             </StackPanel>
 
