@@ -15,18 +15,19 @@ namespace Lamna.Data
 
         }
 
-        public Appointment(string FamilyName, string Address, double Latitude, double Longitude)
+        public Appointment(string familyName, string address, DateTime time, double latitude, double longitude, bool inProgress = false)
         {
             this.Id = Guid.NewGuid().ToString();
             this.NormalizedAnchorPoint = new Point(0.5, 1);
-            this.FamilyName = FamilyName;
-            this.Address = Address;
+            this.FamilyName = familyName;
+            this.Address = address;
             this.Pictures = new List<LocationPicture>();
-            InProgress = false;
+            this.Time = time;
+            InProgress = inProgress;
             Location = new Geopoint(new BasicGeoposition()
             {
-                Latitude = Latitude,
-                Longitude = Longitude
+                Latitude = latitude,
+                Longitude = longitude
             }); 
         }
 
@@ -37,6 +38,7 @@ namespace Lamna.Data
         public Point NormalizedAnchorPoint { get; set; }
         public List<LocationPicture> Pictures { get; set; }
         public bool InProgress { get; set; }
+        public DateTime Time { get; set; }
     }
 
 }

@@ -42,5 +42,25 @@ namespace Lamna.Data
 
         }
 
+        public static Uri GetAerialImageUrl(Geopoint center, int zoomLevel, double width, double height)
+        {
+            if (center == null) return null;
+
+            var rawUrl = "http://dev.virtualearth.net/REST/v1/Imagery/Map/Aerial/" + 
+                          center.Position.Latitude + "," + center.Position.Longitude + 
+                          "/" + zoomLevel + "?" +
+                          "pushpin=" + center.Position.Latitude + "," + center.Position.Longitude + ";59&";
+
+            if (width != 0 && height != 0)
+            {
+                rawUrl += "ms=" + width + "," + height + "&";
+            }
+
+
+            rawUrl += "key=" + DataSource.BingMapsKey;
+
+            return new Uri(rawUrl);
+        }
+
     }
 }

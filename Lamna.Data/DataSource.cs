@@ -16,6 +16,8 @@ namespace Lamna.Data
 
         public static string BingMapsKey = "FySvlXjivCDPa2T4FHQB~R9u7hEyUOYk8mGfNOn599g~AiWs3OvU5Iumz9ytkmcb_lD_ZcHTZR2mNXMqWq74Nra7mEano0SbVuTWHTIxqXDU";
 
+        public static DateTime Now = new DateTime(2015, 10, 21, 0, 0, 0);
+
         static private DataSource source;
         private FileService _fileService;
 
@@ -68,9 +70,15 @@ namespace Lamna.Data
 
             if (toReturn.Count == 0)
             {
-                toReturn.Add(new Appointment("Metulev Family", "10351 NE 10th St, Bellevue, WA 98004", 47.619225, -122.20239));
-                toReturn.Add(new Appointment("Gates Family", "95th Ave NE, Bellevue, WA 98004", 47.645161, -122.213463));
-                toReturn.Add(new Appointment("Nadela Family", "73rd Ave NE, Medina, WA 98039", 47.625149, -122.241905));
+                toReturn.Add(new Appointment("Metulev", "73rd Ave NE, Medina, WA 98039", new DateTime(2015, 10, 21, 0, 30, 0), 47.625149, -122.241905));
+                toReturn.Add(new Appointment("Chauhan", "95th Ave NE, Bellevue, WA 98004", new DateTime(2015, 10, 21, 2, 30, 0), 47.645161, -122.213463));
+                toReturn.Add(new Appointment("Burtoft", "10450 NE 4th St, Bellevue, WA 98004", new DateTime(2015, 10, 21, 5, 30, 0), 47.619225, -122.20239));
+                toReturn.Add(new Appointment("Sardo", "809 21st Ave, Seattle, WA 98122", new DateTime(2015, 10, 21, 7, 30, 0), 47.609097, -122.305031));
+                toReturn.Add(new Appointment("Crawford", "681 19th Ave E, Seattle, WA 98112", new DateTime(2015, 10, 21, 7, 30, 0), 47.625072, -122.307472, true));
+                toReturn.Add(new Appointment("Catuhe", "95th Ave NE, Bellevue, WA 98004", new DateTime(2015, 10, 21, 2, 30, 0), 47.645161, -122.213463, true));
+                toReturn.Add(new Appointment("Kolesnikov", "10351 NE 10th St, Bellevue, WA 98004", new DateTime(2015, 10, 21, 0, 30, 0), 47.619225, -122.20239, true));
+                toReturn.Add(new Appointment("Brown", "95th Ave NE, Bellevue, WA 98004", new DateTime(2015, 10, 21, 2, 30, 0), 47.645161, -122.213463, true));
+                toReturn.Add(new Appointment("Willhelmsen", "73rd Ave NE, Medina, WA 98039", new DateTime(2015, 10, 21, 5, 0, 0), 47.625149, -122.241905, true));
                 await _fileService.WriteAsync<Appointment>(cacheKey, toReturn);
                 _appointments = toReturn;
             }

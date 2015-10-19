@@ -49,41 +49,53 @@
                     <TextBlock Text="{Binding}" Foreground="#FFFF6D40" FontSize="16" Margin="5"></TextBlock>
                 </DataTemplate>
             </Pivot.HeaderTemplate>
-            <PivotItem Header="Details">
-                <ScrollViewer VerticalScrollMode="Auto" HorizontalScrollMode="Disabled" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <StackPanel>
-                            <TextBox Header="ID" IsEnabled="False" Text="2347-75243529853245"></TextBox>
-                            <TextBox Header=" Customer" Text="{x:Bind Data.FamilyName, Mode=TwoWay}"></TextBox>
-                            <TextBox Header="Property" Text="{x:Bind Data.Address, Mode=TwoWay}"></TextBox>
-                        </StackPanel>
-                        <StackPanel Grid.Column="1">
-                           
-                            <TextBox Header="Agent" Text="John Smith"></TextBox>
-                            <DatePicker Header="Date of Inspection"></DatePicker>
-                            <ComboBox Header="Style of Home" SelectedIndex="0">
-                                <x:String>Craftsman, Rambier</x:String>
-                            </ComboBox>
-                        </StackPanel>
-                        <StackPanel Grid.Column="2">
-                            <TextBox Header="Temperature" Text="Over 65F"></TextBox>
-                            <TextBox Header="Rain" Text="No"></TextBox>
-                            <TextBox Header="In Attendance" Text="Clinet and their agent"></TextBox>
-                            <TextBox Header="In Attendance" Text="Clinet and their agent"></TextBox>
-                            <TextBox Header="In Attendance" Text="Clinet and their agent"></TextBox>
-                            <TextBox Header="In Attendance" Text="Clinet and their agent"></TextBox>
-                            <TextBox Header="In Attendance" Text="Clinet and their agent"></TextBox>
-                            <TextBox Header="In Attendance" Text="Clinet and their agent"></TextBox>
-                            <TextBox Header="In Attendance" Text="Clinet and their agent"></TextBox>
-                            <TextBox Header="In Attendance" Text="Clinet and their agent"></TextBox>
-                        </StackPanel>
+            <PivotItem Header="Details" Margin="0">
+                <Grid>
+                    <Grid x:Name="StaticMapImageContainer" Height="500" VerticalAlignment="Top">
+                        <Image Height="500" Source="ms-appx:///Assets/temp_map.jpg" HorizontalAlignment="Center" Stretch="UniformToFill"></Image>
+                        <Image x:Name="StaticMapImage" Height="700"  Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <!--<Image.RenderTransform>
+                                <CompositeTransform TranslateY="-200"></CompositeTransform>
+                            </Image.RenderTransform>-->
+                        </Image>
                     </Grid>
-                </ScrollViewer>
+                    <ScrollViewer VerticalScrollMode="Auto" HorizontalScrollMode="Disabled" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                        <Border Padding="0,300,0,0" >
+                            <Grid Background="#FFFDDCC8">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <TextBox Header="ID" IsEnabled="False" Text="2347-75243529853245"></TextBox>
+                                    <TextBox Header=" Customer" Text="{x:Bind Data.FamilyName, Mode=TwoWay}"></TextBox>
+                                    <TextBox Header="Property" Text="{x:Bind Data.Address, Mode=TwoWay}"></TextBox>
+                                </StackPanel>
+                                <StackPanel Grid.Column="1">
+
+                                    <TextBox Header="Agent" Text="John Smith"></TextBox>
+                                    <DatePicker Header="Date of Inspection"></DatePicker>
+                                    <ComboBox Header="Style of Home" SelectedIndex="0">
+                                        <x:String>Craftsman, Rambier</x:String>
+                                    </ComboBox>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBox Header="Temperature" Text="Over 65F"></TextBox>
+                                    <TextBox Header="Rain" Text="No"></TextBox>
+                                    <TextBox Header="In Attendance" Text="Clinet and their agent"></TextBox>
+                                    <TextBox Header="In Attendance" Text="Clinet and their agent"></TextBox>
+                                    <TextBox Header="In Attendance" Text="Clinet and their agent"></TextBox>
+                                    <TextBox Header="In Attendance" Text="Clinet and their agent"></TextBox>
+                                    <TextBox Header="In Attendance" Text="Clinet and their agent"></TextBox>
+                                    <TextBox Header="In Attendance" Text="Clinet and their agent"></TextBox>
+                                    <TextBox Header="In Attendance" Text="Clinet and their agent"></TextBox>
+                                    <TextBox Header="In Attendance" Text="Clinet and their agent"></TextBox>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </ScrollViewer>
+                </Grid>
             </PivotItem>
             
             <!--#region PivotItems-->

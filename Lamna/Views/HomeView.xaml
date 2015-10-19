@@ -67,7 +67,9 @@
                                                     <StackPanel>
                                                         <TextBlock Text="{x:Bind FamilyName}"></TextBlock>
                                                         <TextBlock Text="{x:Bind Address}" TextWrapping="WrapWholeWords"></TextBlock>
-                                                        <TextBlock Text="Appointment in: 30 minutes"></TextBlock>
+                                                        <TextBlock Text="Appointment in: ">
+                                                            <Run Text="{x:Bind Time, Converter={StaticResource RelativeTimeConverter}}"></Run>
+                                                        </TextBlock>
                                                     </StackPanel>
                                                 </Border>
                                             </Grid>

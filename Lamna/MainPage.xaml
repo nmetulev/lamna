@@ -62,7 +62,6 @@
             <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right" Margin="40">
 
                 <TextBlock FontSize="40" HorizontalAlignment="Right" Text="STILL NEED TO DO"></TextBlock>
-                <TextBlock HorizontalAlignment="Right">Cortana</TextBlock>
                 <TextBlock HorizontalAlignment="Right">Data Model</TextBlock>
                 <TextBlock HorizontalAlignment="Right">Create mock up data</TextBlock>
                 <TextBlock HorizontalAlignment="Right">Rich Note taking (Voice)</TextBlock>

@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
 
@@ -37,6 +38,7 @@ namespace Lamna.Views
             timer = new DispatcherTimer();
             timer.Tick += Timer_Tick;
             timer.Interval = TimeSpan.FromSeconds(3);
+
         }
 
         
@@ -46,7 +48,11 @@ namespace Lamna.Views
             if (e.Parameter != null)
             {
                 Data = await DataSource.GetInstance().GetAppointmentAsync(e.Parameter as string) ;
+                StaticMapImage.Source = new BitmapImage(MapService.GetAerialImageUrl(Data.Location, 19, 2000, 700));
+
             }
+
+
 
             InitializeInker();
             
