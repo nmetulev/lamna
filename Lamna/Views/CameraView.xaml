@@ -63,10 +63,14 @@
             </Viewbox>
             
             <inkTools:InkToolbar TargetInkCanvas="{x:Bind Inker}" PenColor="#FFE61021" VerticalAlignment="Top" HorizontalAlignment="Right"></inkTools:InkToolbar>
+
+            <Border VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Background="White">
+                
             <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
                 <Button Content="Cancel" Click="CancelPreviewClicked" Margin="20"></Button>
                 <Button Content="Save" Click="SavePreviewClicked" Margin="20"></Button>
             </StackPanel>
+            </Border>
         </Grid>
         
         <Border x:Name="Flash" Background="White" Opacity="0" IsHitTestVisible="False"></Border>

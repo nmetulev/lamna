@@ -40,9 +40,9 @@
                 </maps:MapItemsControl.ItemTemplate>
             </maps:MapItemsControl>
         </maps:MapControl>
-        <Border HorizontalAlignment="Left" Width="300">
+        <Border HorizontalAlignment="Left" Width="300" Margin="10">
             <Border.Background>
-                <SolidColorBrush Color="#AA2C142A"></SolidColorBrush>
+                <SolidColorBrush></SolidColorBrush>
                 <!--<LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
                     <GradientStop Color="#FF2C142A" Offset="0"/>
                     <GradientStop Color="#002C142A" Offset="1"/>
@@ -56,52 +56,57 @@
                             <TextBlock Text="Here is your day!" HorizontalAlignment="Center"></TextBlock>
                         </StackPanel>
 
-                        <StackPanel Background="White" Margin="0,0,0,5">
-                            <TextBlock Margin="5" Text="Today's inspections"></TextBlock>
-                            <ItemsControl ItemsSource="{x:Bind Upcoming}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate x:DataType="data:Appointment">
-                                        <Button Margin="0,0,0,5" Background="Transparent" Click="LocationClicked">
-                                            <Grid >
-                                                <Border BorderBrush="Gray" BorderThickness="0,1,0,0" Margin="5,0,5,0">
-                                                    <StackPanel>
-                                                        <TextBlock Text="{x:Bind FamilyName}"></TextBlock>
-                                                        <TextBlock Text="{x:Bind Address}" TextWrapping="WrapWholeWords"></TextBlock>
-                                                        <TextBlock Text="Appointment in: ">
+                        <Border Background="White" Margin="0,0,0,5" BorderBrush="Gray" BorderThickness="1">
+                            <StackPanel  >
+                                <TextBlock Margin="5" Text="Today's inspections"></TextBlock>
+                                <ItemsControl ItemsSource="{x:Bind Upcoming}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="data:Appointment">
+                                            <Button Margin="0,0,0,5" Background="Transparent" Click="LocationClicked">
+                                                <Grid >
+                                                    <Border BorderBrush="Gray" BorderThickness="0,1,0,0" Margin="5,0,5,0">
+                                                        <StackPanel>
+                                                            <TextBlock Text="{x:Bind FamilyName}"></TextBlock>
+                                                            <TextBlock Text="{x:Bind Address}" TextWrapping="WrapWholeWords"></TextBlock>
+                                                            <TextBlock Text="Appointment in: ">
                                                             <Run Text="{x:Bind Time, Converter={StaticResource RelativeTimeConverter}}"></Run>
-                                                        </TextBlock>
-                                                    </StackPanel>
-                                                </Border>
-                                            </Grid>
-                                        </Button>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
+                                                            </TextBlock>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </Grid>
+                                            </Button>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
 
-                        <StackPanel Background="White" Margin="0,0,0,5">
-                            <TextBlock Margin="5" Text="In progress inspections"></TextBlock>
-                            <ItemsControl ItemsSource="{x:Bind InProgress}">
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate x:DataType="data:Appointment">
-                                        <Grid Margin="0,0,0,5">
-                                            <Border BorderBrush="Gray" BorderThickness="0,1,0,0" Margin="5,0,5,0">
-                                                <StackPanel>
-                                                    <TextBlock Text="{x:Bind FamilyName}"></TextBlock>
-                                                    <TextBlock Text="{x:Bind Address}" TextWrapping="WrapWholeWords"></TextBlock>
-                                                    <TextBlock Text="Appointment in: 30 minutes"></TextBlock>
-                                                </StackPanel>
-                                            </Border>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
-                        </StackPanel>
+                        <Border Background="White" Margin="0,0,0,5" BorderBrush="Gray" BorderThickness="1">
+                            <StackPanel Background="White" Margin="0,0,0,5">
+                                <TextBlock Margin="5" Text="In progress inspections"></TextBlock>
+                                <ItemsControl ItemsSource="{x:Bind InProgress}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate x:DataType="data:Appointment">
+                                            <Button Margin="0,0,0,5" Background="Transparent" Click="LocationClicked">
+                                                <Grid >
+                                                    <Border BorderBrush="Gray" BorderThickness="0,1,0,0" Margin="5,0,5,0" >
+                                                        <StackPanel>
+                                                            <TextBlock Text="{x:Bind FamilyName}"></TextBlock>
+                                                            <TextBlock Text="{x:Bind Address}" TextWrapping="WrapWholeWords"></TextBlock>
+                                                        </StackPanel>
+                                                    </Border>
+                                                </Grid>
+                                            </Button>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </Border>
 
-                        <StackPanel Background="White" Margin="0,0,0,5">
+                        <!--<StackPanel Background="White" Margin="0,0,0,5">
                             <TextBlock Margin="5" Text="Health"></TextBlock>
                             <TextBlock Margin="5" Text="This is your emotional state because we care"></TextBlock>
-                        </StackPanel>
+                        </StackPanel>-->
 
                     </StackPanel>
 

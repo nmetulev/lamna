@@ -59,7 +59,7 @@
 
         <Grid x:Name="LockScreen" Background="#FFFDDCC8">
 
-            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right" Margin="40">
+            <StackPanel VerticalAlignment="Top" HorizontalAlignment="Right" Margin="40" Visibility="Collapsed">
 
                 <TextBlock FontSize="40" HorizontalAlignment="Right" Text="STILL NEED TO DO"></TextBlock>
                 <TextBlock HorizontalAlignment="Right">Data Model</TextBlock>
