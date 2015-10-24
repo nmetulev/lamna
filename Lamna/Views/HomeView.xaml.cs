@@ -40,6 +40,7 @@ namespace Lamna.Views
         }
 
         private List<Appointment> _upcoming;
+        private bool _floaterActive = true;
 
         public List<Appointment> Upcoming
         {
@@ -71,13 +72,80 @@ namespace Lamna.Views
 
             Upcoming = new List<Appointment>(appointments.Where(x => x.InProgress == false));
             InProgress = new List<Appointment>(appointments.Where(x => x.InProgress == true));
+
+            Window.Current.SizeChanged += Current_SizeChanged;
             
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            Window.Current.SizeChanged -= Current_SizeChanged;
+
+        }
+
+        private void Current_SizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)
+        {
+            if (!_floaterActive && e.Size.Width < 700)
+            {
+                FloaterTransform.TranslateY = e.Size.Height - 110;
+            }
+            else if (!_floaterActive)
+            {
+                ToggleFloater();
+            }
         }
 
         private void LocationClicked (object sender, RoutedEventArgs e)
         {
             var appointment = (sender as Button).DataContext as Appointment;
             ((App)App.Current).MainFrame.Navigate(typeof(AppointmentView), appointment.Id);
+        }
+
+
+        private void FloaterToggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleFloater();
+        }
+
+        private void ToggleFloater()
+        {
+            if (_floaterActive)
+            {
+                _floaterActive = false;
+                FloaterTransformAnimation.From = 0;
+                FloaterTransformAnimation.To = Window.Current.Bounds.Height - 110;
+                FloaterStoryboard.Stop();
+                FloaterStoryboard.Begin();
+
+                FloaterToggleSymbol.Symbol = Symbol.Up;
+                FloaterScrollviewer.ChangeView(0, 0, 1);
+                FloaterScrollviewer.VerticalScrollMode = ScrollMode.Disabled;
+                FloaterScrollviewer.VerticalScrollBarVisibility = ScrollBarVisibility.Disabled;
+            }
+            else
+            {
+                _floaterActive = true;
+                FloaterTransformAnimation.To = 0;
+                FloaterTransformAnimation.From = Window.Current.Bounds.Height - 110;
+
+                FloaterStoryboard.Stop();
+                FloaterStoryboard.Begin();
+
+                FloaterToggleSymbol.Symbol = Symbol.DockBottom;
+                FloaterScrollviewer.VerticalScrollMode = ScrollMode.Auto;
+                FloaterScrollviewer.VerticalScrollBarVisibility = ScrollBarVisibility.Auto;
+            }
+        }
+
+        private async void ShowOnMapClicked(object sender, RoutedEventArgs e)
+        {
+            if (Window.Current.Bounds.Width < 700 && _floaterActive)
+            {
+                ToggleFloater();
+            }
+            var appointment = (sender as Button).DataContext as Appointment;
+            await Map.TrySetViewAsync(appointment.Location);
+            await Map.TryZoomToAsync(16);
         }
     }
     

@@ -8,8 +8,51 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
+    
 
     <Grid>
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="Size">
+
+
+                <VisualState x:Name="Narrow">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0"></AdaptiveTrigger>
+
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+
+                        <Setter Target="Floater.HorizontalAlignment" Value="Stretch"></Setter>
+                        <Setter Target="FloaterToggleButton.Visibility" Value="Visible"></Setter>
+                        
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="Wide">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="700"></AdaptiveTrigger>
+
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+
+                        <Setter Target="Floater.Width" Value="300"></Setter>
+                        <Setter Target="Floater.HorizontalAlignment" Value="Left"></Setter>
+                        <Setter Target="FloaterToggleButton.Visibility" Value="Collapsed"></Setter>
+
+                    </VisualState.Setters>
+                </VisualState>
+
+
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Grid.Resources>
+            <Storyboard x:Name="FloaterStoryboard">
+                <DoubleAnimation x:Name="FloaterTransformAnimation" Storyboard.TargetProperty="TranslateY" Storyboard.TargetName="FloaterTransform" Duration="0:0:0.3">
+                    <DoubleAnimation.EasingFunction>
+                        <ExponentialEase Exponent="3" EasingMode="EaseOut" ></ExponentialEase>
+                    </DoubleAnimation.EasingFunction>
+                </DoubleAnimation>
+            </Storyboard>
+        </Grid.Resources>
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <EntranceThemeTransition />
@@ -24,14 +67,17 @@
                 <maps:MapItemsControl.ItemTemplate >
                     <DataTemplate x:DataType="data:Appointment">
                         <Button Background="Transparent" Click="LocationClicked">
-                            <Grid  Height="100" Width="150" maps:MapControl.Location="{x:Bind Location}" maps:MapControl.NormalizedAnchorPoint="{x:Bind NormalizedAnchorPoint}">
-                                <Border Background="White" BorderBrush="Gray" BorderThickness="1,5,1,1" Margin="0,0,0,10" CornerRadius="5">
-                                    <StackPanel>
-                                        <TextBlock Text="{x:Bind FamilyName}"></TextBlock>
-                                        <TextBlock Text="{x:Bind Address}" TextWrapping="WrapWholeWords"></TextBlock>
-                                        <TextBlock Text="Appointment in: 30 minutes"></TextBlock>
-                                    </StackPanel>
-                                    
+                            <Grid  Height="120" Width="200" maps:MapControl.Location="{x:Bind Location}" maps:MapControl.NormalizedAnchorPoint="{x:Bind NormalizedAnchorPoint}">
+                                <Border Padding="1" Margin="0,0,0,5">
+                                    <Border Background="#FFF0F0F0" BorderBrush="#FF3A3939" BorderThickness="1,5,1,1" Margin="0,0,0,10" CornerRadius="5" Padding="10">
+                                        <StackPanel>
+                                            <TextBlock Text="{x:Bind FamilyName}" FontSize="24"></TextBlock>
+                                            <TextBlock Text="{x:Bind Address}" TextWrapping="WrapWholeWords"></TextBlock>
+                                            <!--<TextBlock Text="Appointment in ">
+                                                <Run Text="{x:Bind Time, Converter={StaticResource RelativeTimeConverter}}"></Run>
+                                            </TextBlock>-->
+                                        </StackPanel>
+                                    </Border>
                                 </Border>
                                 <Path HorizontalAlignment="Center" VerticalAlignment="Bottom" Data="M0,0 L10,10 L20,0" Fill="White" Stroke="Gray"></Path>
                             </Grid>
@@ -40,96 +86,111 @@
                 </maps:MapItemsControl.ItemTemplate>
             </maps:MapItemsControl>
         </maps:MapControl>
-        <Border HorizontalAlignment="Left" Width="300" Margin="10">
-            <Border.Background>
-                <SolidColorBrush></SolidColorBrush>
-                <!--<LinearGradientBrush EndPoint="1,0.5" StartPoint="0,0.5">
-                    <GradientStop Color="#FF2C142A" Offset="0"/>
-                    <GradientStop Color="#002C142A" Offset="1"/>
-                </LinearGradientBrush>-->
-            </Border.Background>
-            <Grid>
-                <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalScrollMode="Auto" HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Disabled" Padding="0,5">
-                    <StackPanel>
-                        <StackPanel VerticalAlignment="Top" IsHitTestVisible="False" Background="Gray" Padding="10" Margin="0,0,0,5">
-                            <TextBlock Text="Hi Nikola" HorizontalAlignment="Center" FontSize="30"></TextBlock>
-                            <TextBlock Text="Here is your day!" HorizontalAlignment="Center"></TextBlock>
-                        </StackPanel>
+        <Border x:Name="Floater" VerticalAlignment="Top">
+            <ScrollViewer x:Name="FloaterScrollviewer" VerticalScrollBarVisibility="Auto" VerticalScrollMode="Auto" HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Disabled" Padding="10,0">
+                <StackPanel Padding="0,10">
+                    <Border Background="#66808080" Padding="1" Margin="0,0,0,5">
+                        <Grid>
+                            <StackPanel VerticalAlignment="Top" IsHitTestVisible="False" Background="#FF3A3939" Padding="10">
+                                <TextBlock Text="Hi Nikola" HorizontalAlignment="Center" FontSize="30" Foreground="Gainsboro"></TextBlock>
+                                <TextBlock Text="Here is your day!" HorizontalAlignment="Center" Foreground="#FFBFBFBF"></TextBlock>
+                            </StackPanel>
 
-                        <Border Background="White" Margin="0,0,0,5" BorderBrush="Gray" BorderThickness="1">
-                            <StackPanel  >
-                                <TextBlock Margin="5" Text="Today's inspections"></TextBlock>
+                            <Button x:Name="FloaterToggleButton" Background="Transparent" RequestedTheme="Dark" HorizontalAlignment="Right" Margin="5" Click="FloaterToggleButton_Click">
+                                <SymbolIcon x:Name="FloaterToggleSymbol" Symbol="DockBottom"></SymbolIcon>
+                            </Button>
+                            
+                        </Grid>
+                    </Border>
+
+                    <Border Background="#66808080" Padding="1" Margin="0,0,0,5">
+                        <Border Background="#FFF0F0F0"  BorderBrush="Gray" BorderThickness="1">
+                            <StackPanel>
+                                <TextBlock Margin="5" Text="Today's inspections" Foreground="#FF5B5B5B" TextAlignment="Center"></TextBlock>
                                 <ItemsControl ItemsSource="{x:Bind Upcoming}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate x:DataType="data:Appointment">
-                                            <Button Margin="0,0,0,5" Background="Transparent" Click="LocationClicked">
-                                                <Grid >
-                                                    <Border BorderBrush="Gray" BorderThickness="0,1,0,0" Margin="5,0,5,0">
-                                                        <StackPanel>
-                                                            <TextBlock Text="{x:Bind FamilyName}"></TextBlock>
-                                                            <TextBlock Text="{x:Bind Address}" TextWrapping="WrapWholeWords"></TextBlock>
-                                                            <TextBlock Text="Appointment in: ">
-                                                            <Run Text="{x:Bind Time, Converter={StaticResource RelativeTimeConverter}}"></Run>
-                                                            </TextBlock>
-                                                        </StackPanel>
-                                                    </Border>
-                                                </Grid>
-                                            </Button>
+                                            <!--<Button Margin="0,0,0,5" Background="Transparent" Click="LocationClicked" HorizontalAlignment="Stretch">-->
+                                            <Grid  Margin="0, 0, 0, 8">
+                                                <Border BorderBrush="#7F808080" BorderThickness="0,1,0,0" Margin="5,0,5,0">
+                                                    <StackPanel>
+                                                        <TextBlock Text="{x:Bind FamilyName}" FontSize="24"></TextBlock>
+                                                        <TextBlock Text="{x:Bind Address}" TextWrapping="WrapWholeWords"></TextBlock>
+                                                        <TextBlock Text="Appointment in ">
+                                                                    <Run Text="{x:Bind Time, Converter={StaticResource RelativeTimeConverter}}"></Run>
+                                                        </TextBlock>
+                                                        <Grid Margin="0,6,0,0">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="*" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <Button HorizontalAlignment="Stretch" Margin="0,0,2,0" Click="LocationClicked">Details</Button>
+                                                            <Button Grid.Column="1" HorizontalAlignment="Stretch" Margin="2,0,0,0" Click="ShowOnMapClicked">Show on Map</Button>
+                                                        </Grid>
+                                                    </StackPanel>
+                                                </Border>
+                                            </Grid>
+                                            <!--</Button>-->
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
+                                    <ItemsControl.ItemContainerStyle>
+                                        <Style TargetType="ContentPresenter">
+                                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                        </Style>
+                                    </ItemsControl.ItemContainerStyle>
+
                                 </ItemsControl>
                             </StackPanel>
                         </Border>
+                    </Border>
 
-                        <Border Background="White" Margin="0,0,0,5" BorderBrush="Gray" BorderThickness="1">
+                    <Border Background="#66808080" Padding="1" Margin="0,0,0,5">
+                        <Border Background="#FFF0F0F0"  BorderBrush="Gray" BorderThickness="1">
                             <StackPanel Background="White" Margin="0,0,0,5">
-                                <TextBlock Margin="5" Text="In progress inspections"></TextBlock>
+                                <TextBlock Margin="5" Text="In progress inspections" Foreground="#FF5B5B5B" TextAlignment="Center"></TextBlock>
                                 <ItemsControl ItemsSource="{x:Bind InProgress}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate x:DataType="data:Appointment">
-                                            <Button Margin="0,0,0,5" Background="Transparent" Click="LocationClicked">
-                                                <Grid >
-                                                    <Border BorderBrush="Gray" BorderThickness="0,1,0,0" Margin="5,0,5,0" >
-                                                        <StackPanel>
-                                                            <TextBlock Text="{x:Bind FamilyName}"></TextBlock>
-                                                            <TextBlock Text="{x:Bind Address}" TextWrapping="WrapWholeWords"></TextBlock>
-                                                        </StackPanel>
-                                                    </Border>
-                                                </Grid>
-                                            </Button>
+                                            <Grid Margin="0, 0, 0, 8">
+                                                <Border BorderBrush="#7F808080" BorderThickness="0,1,0,0" Margin="5,0,5,0">
+                                                    <StackPanel>
+                                                        <TextBlock Text="{x:Bind FamilyName}" FontSize="24"></TextBlock>
+                                                        <TextBlock Text="{x:Bind Address}" TextWrapping="WrapWholeWords"></TextBlock>
+                                                        <Grid Margin="0,6,0,0">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*" />
+                                                                <ColumnDefinition Width="*" />
+                                                            </Grid.ColumnDefinitions>
+                                                            <Button HorizontalAlignment="Stretch" Margin="0,0,2,0" Click="LocationClicked">Details</Button>
+                                                            <Button Grid.Column="1" HorizontalAlignment="Stretch" Margin="2,0,0,0">Complete</Button>
+                                                        </Grid>
+                                                    </StackPanel>
+                                                </Border>
+                                            </Grid>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
+                                    <ItemsControl.ItemContainerStyle>
+                                        <Style TargetType="ContentPresenter">
+                                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                        </Style>
+                                    </ItemsControl.ItemContainerStyle>
                                 </ItemsControl>
                             </StackPanel>
                         </Border>
+                    </Border>
 
-                        <!--<StackPanel Background="White" Margin="0,0,0,5">
+                    <!--<StackPanel Background="White" Margin="0,0,0,5">
                             <TextBlock Margin="5" Text="Health"></TextBlock>
                             <TextBlock Margin="5" Text="This is your emotional state because we care"></TextBlock>
                         </StackPanel>-->
 
-                    </StackPanel>
-
-                </ScrollViewer>
-
+                </StackPanel>
                 
-            </Grid>
+            </ScrollViewer>
 
-            <!--<ListView x:Name="List">
-                <ListView.ItemTemplate>
-                    <DataTemplate x:DataType="data:HomeLocation">
-                        <Grid >
-                            <Border Background="White" BorderBrush="Gray" BorderThickness="1,5,1,1" Margin="0,0,0,10" CornerRadius="5">
-                                <StackPanel>
-                                    <TextBlock Text="{x:Bind FamilyName}"></TextBlock>
-                                    <TextBlock Text="{x:Bind Address}" TextWrapping="WrapWholeWords"></TextBlock>
-                                    <TextBlock Text="Appointment in: 30 minutes"></TextBlock>
-                                </StackPanel>
-                            </Border>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>-->
+            <Border.RenderTransform>
+                <CompositeTransform x:Name="FloaterTransform"></CompositeTransform>
+            </Border.RenderTransform>
         </Border>
     </Grid>
 </Page>
