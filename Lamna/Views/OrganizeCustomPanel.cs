@@ -11,33 +11,32 @@ namespace Lamna.Views
         protected override Size MeasureOverride(Size availableSize)
         {
             var resultSize = new Size(0, 0);
-            var nextItemBuckets = new Dictionary<double, double>();
-            var currentPointer = 0d;
+
+            double y = 0;
+            double x = 0;
+
+            double maxX = 0;
 
             foreach (var child in Children)
             {
-                if (!nextItemBuckets.ContainsKey(currentPointer))
+
+                if (x + child.DesiredSize.Width > availableSize.Width)
                 {
-                    nextItemBuckets.Add(currentPointer, 0);
+                    x = 0;
+                    y += child.DesiredSize.Height;
                 }
 
                 child.Measure(availableSize);
 
-                nextItemBuckets[currentPointer] += child.DesiredSize.Height;
+                x += child.DesiredSize.Width;
 
-                resultSize.Width = Math.Max(resultSize.Width, currentPointer);
-                resultSize.Height = Math.Max(resultSize.Height, nextItemBuckets[currentPointer]);
-
-                currentPointer += child.DesiredSize.Width;
-
-                if ((currentPointer + child.DesiredSize.Width) > availableSize.Width)
-                {
-                    currentPointer = 0;
-                }
+                maxX = Math.Max(x, maxX);
+                
+                
             }
 
-            resultSize.Width = double.IsPositiveInfinity(availableSize.Width) ? resultSize.Width : availableSize.Width;
-            resultSize.Height = double.IsPositiveInfinity(availableSize.Height) ? resultSize.Height : availableSize.Height;
+            resultSize.Width = maxX;
+            resultSize.Height = double.IsPositiveInfinity(availableSize.Height) ? y + Children.Last().DesiredSize.Height : availableSize.Height;
 
             return resultSize;
         }
@@ -48,30 +47,25 @@ namespace Lamna.Views
             {
                 return finalSize;
             }
-
-            var nextItemBuckets = new Dictionary<double, double>();
-            var currentPointer = 0d;
+            
+            double y = 0;
+            double x = 0;
 
             foreach (var child in this.Children)
             {
-                if (!nextItemBuckets.ContainsKey(currentPointer))
+                if (x + child.DesiredSize.Width > finalSize.Width)
                 {
-                    // Adding an 12 pixel top margin so it looks equal
-                    nextItemBuckets.Add(currentPointer, 12);
+                    x = 0;
+                    y += child.DesiredSize.Height;
                 }
 
-                child.Arrange(new Rect(currentPointer, nextItemBuckets[currentPointer], child.DesiredSize.Width, child.DesiredSize.Height));
 
-                nextItemBuckets[currentPointer] += child.DesiredSize.Height;
-                currentPointer += child.DesiredSize.Width;
+                child.Arrange(new Rect(x, y, child.DesiredSize.Width, child.DesiredSize.Height));
 
-                if ((currentPointer + child.DesiredSize.Width) > finalSize.Width)
-                {
-                    currentPointer = 0;
-                }
+                x += child.DesiredSize.Width;
             }
 
-            return new Size(finalSize.Width, nextItemBuckets[0]);
+            return new Size(finalSize.Width, y + Children.Last().DesiredSize.Height);
         }
     }
 }

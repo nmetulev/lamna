@@ -363,14 +363,14 @@ namespace Lamna.Views
                 string location = recoResult.SemanticInterpretation.Properties["KEY_LOCATION"][0].ToString();
                 Debug.WriteLine("Recognized location: " + location);
 
-                LocationTextContent = location;
+                LocationTextContent = location.ToUpper();
             }
 
             if (recoResult.SemanticInterpretation.Properties.ContainsKey("KEY_DEFECT") && recoResult.SemanticInterpretation.Properties["KEY_DEFECT"][0].ToString() != "...")
             {
-                string location = recoResult.SemanticInterpretation.Properties["KEY_DEFECT"][0].ToString();
+                string defect = recoResult.SemanticInterpretation.Properties["KEY_DEFECT"][0].ToString();
 
-                DefectTextContent = location;
+                DefectTextContent = defect.ToUpper();
             }
 
             if (recoResult.SemanticInterpretation.Properties.ContainsKey("KEY_NOTE"))
@@ -784,8 +784,14 @@ namespace Lamna.Views
             _currentGuid = Guid.NewGuid().ToString();
             var stream = new InMemoryRandomAccessStream();
 
+
             try
             {
+                PreviewImage.Source = null;
+                PreviewContainer.Visibility = Visibility.Visible;
+                FlashStoryboard.Stop();
+                FlashStoryboard.Begin();
+
                 Debug.WriteLine("Taking photo...");
                 await _mediaCapture.CapturePhotoToStreamAsync(ImageEncodingProperties.CreateJpeg(), stream);
                 Debug.WriteLine("Photo taken!");
@@ -794,11 +800,8 @@ namespace Lamna.Views
 
                 await ReencodeAndSavePhotoAsync(stream, photoOrientation, _currentGuid + ".jpg");
 
-                FlashStoryboard.Stop();
-                FlashStoryboard.Begin();
-
                 PreviewImage.Source = new BitmapImage(new Uri("ms-appdata:///local/" + _currentGuid + ".jpg"));
-                PreviewContainer.Visibility = Visibility.Visible;
+                //PreviewContainer.Visibility = Visibility.Visible;
 
                 //if (Appointment != null) Appointment.Pictures.Add(pic);
             }
@@ -830,11 +833,11 @@ namespace Lamna.Views
                 pic.Note = noteTextContent;
                 if (!string.IsNullOrWhiteSpace(locationTextContent))
                 {
-                    pic.Location = (LocationEnumaration)Enum.Parse(typeof(LocationEnumaration), locationTextContent);
+                    pic.Location = (LocationEnumaration)Enum.Parse(typeof(LocationEnumaration), locationTextContent, true);
                 }
                 if (!string.IsNullOrWhiteSpace(defectTextContent))
                 {
-                    pic.Defect = (DefectEnumeration)Enum.Parse(typeof(DefectEnumeration), defectTextContent);
+                    pic.Defect = (DefectEnumeration)Enum.Parse(typeof(DefectEnumeration), defectTextContent, true);
                 }
 
                 _currentGuid = null;

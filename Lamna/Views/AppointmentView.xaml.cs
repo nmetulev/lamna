@@ -30,6 +30,10 @@ namespace Lamna.Views
     /// </summary>
     public sealed partial class AppointmentView : Page
     {
+        
+
+
+
         public Appointment Data{ get; set; }
         DispatcherTimer timer;
 
@@ -50,9 +54,11 @@ namespace Lamna.Views
             {
                 Data = await DataSource.GetInstance().GetAppointmentAsync(e.Parameter as string) ;
                 StaticMapImage.Source = new BitmapImage(MapService.GetAerialImageUrl(Data.Location, 19, 2000, 500));
-
+                //var grp = Data.Pictures.GroupBy(pic => pic.Location);
+                
             }
 
+            
             //SystemNavigationManager.GetForCurrentView().BackRequested += BackButtonBackRequested;
 
             InitializeInker();

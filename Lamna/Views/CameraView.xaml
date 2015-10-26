@@ -12,7 +12,7 @@
         <SolidColorBrush x:Key="TranslucentBlackBrush" Color="Black" Opacity="0.3"/>
     </Page.Resources>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid>
         <Grid.Resources>
             <Storyboard x:Name="FlashStoryboard">
                 <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity" Storyboard.TargetName="Flash" Duration="0:0:0.3">
@@ -26,35 +26,18 @@
         <MediaElement x:Name="Sound" AudioCategory="GameEffects" AutoPlay="False" Visibility="Collapsed"></MediaElement>
 
         <!-- Capture + Record buttons -->
-        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center">
-            <StackPanel.Resources>
-                <Style TargetType="Button">
-                    <Setter Property="Margin" Value="10,40"/>
-                    <Setter Property="MinWidth" Value="80"/>
-                    <Setter Property="MinHeight" Value="80"/>
-                    <Setter Property="Foreground" Value="White"/>
-                    <Setter Property="Background" Value="{StaticResource TranslucentBlackBrush}"/>
-                    <Setter Property="BorderBrush" Value="White"/>
-                    <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-                </Style>
-            </StackPanel.Resources>
+        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="20" RequestedTheme="Dark">
 
-            <Button Name="PhotoButton" Tapped="PhotoButton_Tapped" IsEnabled="False">
+            <Button Name="PhotoButton" Tapped="PhotoButton_Tapped" IsEnabled="True" Background="Transparent">
                 <Viewbox MaxHeight="40" MaxWidth="40">
                     <SymbolIcon Symbol="Camera"/>
                 </Viewbox>
             </Button>
 
-            <!--<Button Name="VideoButton" Tapped="VideoButton_Tapped" IsEnabled="False">
-                <Grid>
-                    <Ellipse x:Name="StartRecordingIcon" Fill="Red" Width="20" Height="20"/>
-                    <Rectangle x:Name="StopRecordingIcon" Fill="White" Width="20" Height="20" Visibility="Collapsed"/>
-                </Grid>
-            </Button>-->
         </StackPanel>
 
 
-        <Grid x:Name="PreviewContainer" Background="Black" Visibility="Collapsed">
+        <Grid x:Name="PreviewContainer" Background="Black" Visibility="Collapsed" >
             <Viewbox Stretch="Uniform">
                 <Grid>
                     <Image x:Name="PreviewImage" Stretch="None"></Image>
@@ -62,13 +45,23 @@
                 </Grid>
             </Viewbox>
             
-            <inkTools:InkToolbar TargetInkCanvas="{x:Bind Inker}" PenColor="#FFE61021" VerticalAlignment="Top" HorizontalAlignment="Right"></inkTools:InkToolbar>
+            <inkTools:InkToolbar TargetInkCanvas="{x:Bind Inker}" Margin="8" PenColor="#FFE61021" VerticalAlignment="Top" HorizontalAlignment="Right" HighlighterVisibility="Collapsed" ButtonBackground="{x:Null}" ButtonForeground="White" ></inkTools:InkToolbar>
 
-            <Border VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Background="White">
+            <Border VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,0">
                 
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
-                <Button Content="Cancel" Click="CancelPreviewClicked" Margin="20"></Button>
-                <Button Content="Save" Click="SavePreviewClicked" Margin="20"></Button>
+            <StackPanel Orientation="Horizontal"  RequestedTheme="Dark" Margin="20">
+                    <Button  IsEnabled="True" Background="Transparent" Margin="20,0" Click="CancelPreviewClicked">
+                            <SymbolIcon Symbol="Cancel"/>
+                    </Button>
+                    <Button IsEnabled="True" Background="Transparent" Click="SavePreviewClicked">
+                        <Viewbox MaxHeight="40" MaxWidth="40">
+                            <SymbolIcon Symbol="Save"/>
+                        </Viewbox>
+                    </Button>
+
+                    
+                <!--<Button Content="Cancel" Click="CancelPreviewClicked" Margin="20"></Button>
+                <Button Content="Save" Click="SavePreviewClicked" Margin="20"></Button>-->
             </StackPanel>
             </Border>
         </Grid>
@@ -76,19 +69,45 @@
         <Border x:Name="Flash" Background="White" Opacity="0" IsHitTestVisible="False"></Border>
 
         <RelativePanel Padding="20" IsHitTestVisible="False">
-            <TextBlock x:Name="LocationText" Foreground="Purple">
-                <Bold>Location: </Bold>
-                <Run Text="{Binding LocationTextContent, FallbackValue=N/A}"></Run>
-            </TextBlock>
-            <TextBlock x:Name="DefectText" RelativePanel.Below="LocationText" Foreground="Purple">
-                <Bold>Defect: </Bold>
+            <Grid  x:Name="LocationText">
+                <TextBlock Foreground="Black" Margin="1,1,0,0" FontSize="25" Opacity="0.5" FontFamily="Segoe UI Semibold">
+                    <Bold>LOCATION: </Bold>
+                    <Run Text="{Binding LocationTextContent, FallbackValue=N/A}"></Run>
+                </TextBlock>
+                <TextBlock Foreground="White" FontSize="25" FontFamily="Segoe UI Semibold">
+                    <Bold>LOCATION: </Bold>
+                    <Run Text="{Binding LocationTextContent, FallbackValue=N/A}"></Run>
+                </TextBlock>
+            </Grid>
+
+            <Grid x:Name="DefectText" RelativePanel.Below="LocationText">
+                <TextBlock   Foreground="Black" Margin="1,1,0,0" FontSize="25" Opacity="0.5" FontFamily="Segoe UI Semibold">
+                <Bold>DEFECT: </Bold>
                 <Run Text="{Binding DefectTextContent, FallbackValue=N/A}"></Run>
-            </TextBlock>
-            <TextBlock x:Name="ListeningText" RelativePanel.Above="NoteText" Foreground="Purple" Visibility="Collapsed">Listening...</TextBlock>
-            <TextBlock x:Name="NoteText" RelativePanel.AlignBottomWithPanel="True" Foreground="Purple" TextWrapping="WrapWholeWords">
-                <Bold>Note: </Bold>
+                </TextBlock>
+                <TextBlock   Foreground="White" FontSize="25" FontFamily="Segoe UI Semibold">
+                <Bold>DEFECT: </Bold>
+                <Run Text="{Binding DefectTextContent, FallbackValue=N/A}"></Run>
+                </TextBlock>
+            </Grid>
+
+            <Grid x:Name="ListeningText" RelativePanel.Above="NoteText" Visibility="Collapsed">
+                <TextBlock  Foreground="Black" Margin="1,1,0,0" FontSize="15" Opacity="0.5" >listening...</TextBlock>
+                <TextBlock  Foreground="White" FontSize="15" >listening...</TextBlock>
+                <!--<ProgressRing Foreground="Black" IsActive="True"></ProgressRing>-->
+            </Grid>
+
+            <Grid x:Name="NoteText" RelativePanel.AlignBottomWithPanel="True" >
+                <TextBlock Foreground="Black" Margin="1,1,0,0" FontSize="25" Opacity="0.5" FontFamily="Segoe UI Semibold">
+                <Bold>NOTE: </Bold>
                 <Run Text="{Binding NoteTextContent, FallbackValue=N/A}"></Run>
-            </TextBlock>
+                </TextBlock>
+                <TextBlock Foreground="White" FontSize="25" FontFamily="Segoe UI Semibold">
+                <Bold>NOTE: </Bold>
+                <Run Text="{Binding NoteTextContent, FallbackValue=N/A}"></Run>
+                </TextBlock>
+            </Grid>
+            
         </RelativePanel>
         
         <Border VerticalAlignment="Bottom" Height="40" Background="Black" Visibility="Collapsed">

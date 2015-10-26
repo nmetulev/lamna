@@ -7,6 +7,17 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
+    <Page.Resources>
+        <ItemsPanelTemplate x:Key="PicturesPanel">
+            <local:OrganizeCustomPanel VerticalAlignment="Top" HorizontalAlignment="Center"/>
+        </ItemsPanelTemplate>
+
+        <DataTemplate x:DataType="data:LocationPicture" x:Key="PicturesTemplate">
+            <Grid>
+                <Image MaxHeight="200" Source="{x:Bind ImageUri, Mode=OneWay}"></Image>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
     <Grid Background="#FFFDDCC8" x:Name="Root" PointerEntered="Root_PointerEntered" PointerMoved="Root_PointerMoved" >
         <Grid.ChildrenTransitions>
             <TransitionCollection>
@@ -198,47 +209,34 @@
             <!--#region PivotItems-->
             
             <PivotItem Header="Roof and Exterior">
-                <GridView ItemsSource="{x:Bind Data.Pictures}" IsItemClickEnabled="True" SelectionMode="None" ItemClick="GridView_ItemClick">
-                    <GridView.ItemTemplate>
-                        <DataTemplate x:DataType="data:LocationPicture">
-                            <Grid>
-                                <Image Width="240" Source="{x:Bind ImageUri, Mode=OneWay}"></Image>
-                            </Grid>
-                        </DataTemplate>
-                    </GridView.ItemTemplate>
-                    <GridView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <local:OrganizeCustomPanel VerticalAlignment="Top" />
-                        </ItemsPanelTemplate>
-                    </GridView.ItemsPanel>
-                </GridView>
+                <GridView ItemsSource="{x:Bind Data.Pictures}" ItemTemplate="{StaticResource PicturesTemplate}" IsItemClickEnabled="True" SelectionMode="None" ItemClick="GridView_ItemClick" ItemsPanel="{StaticResource PicturesPanel}"></GridView>
             </PivotItem>
             <PivotItem Header="Garage">
-
+                <GridView ItemsSource="{x:Bind Data.Pictures}" ItemTemplate="{StaticResource PicturesTemplate}" IsItemClickEnabled="True" SelectionMode="None" ItemClick="GridView_ItemClick" ItemsPanel="{StaticResource PicturesPanel}"></GridView>
             </PivotItem>
             <PivotItem Header="Interior">
-
+                <GridView ItemsSource="{x:Bind Data.Pictures}" ItemTemplate="{StaticResource PicturesTemplate}" IsItemClickEnabled="True" SelectionMode="None" ItemClick="GridView_ItemClick" ItemsPanel="{StaticResource PicturesPanel}"></GridView>
             </PivotItem>
             <PivotItem Header="Electrical">
-
+                <GridView ItemsSource="{x:Bind Data.Pictures}" ItemTemplate="{StaticResource PicturesTemplate}" IsItemClickEnabled="True" SelectionMode="None" ItemClick="GridView_ItemClick" ItemsPanel="{StaticResource PicturesPanel}"></GridView>
             </PivotItem>
             <PivotItem Header="Plumbing">
-
+                <GridView ItemsSource="{x:Bind Data.Pictures}" ItemTemplate="{StaticResource PicturesTemplate}" IsItemClickEnabled="True" SelectionMode="None" ItemClick="GridView_ItemClick" ItemsPanel="{StaticResource PicturesPanel}"></GridView>
             </PivotItem>
             <PivotItem Header="Kitchen">
-
+                <GridView ItemsSource="{x:Bind Data.Pictures}" ItemTemplate="{StaticResource PicturesTemplate}" IsItemClickEnabled="True" SelectionMode="None" ItemClick="GridView_ItemClick" ItemsPanel="{StaticResource PicturesPanel}"></GridView>
             </PivotItem>
             <PivotItem Header="Bath">
-
+                <GridView ItemsSource="{x:Bind Data.Pictures}" ItemTemplate="{StaticResource PicturesTemplate}" IsItemClickEnabled="True" SelectionMode="None" ItemClick="GridView_ItemClick" ItemsPanel="{StaticResource PicturesPanel}"></GridView>
             </PivotItem>
             <PivotItem Header="Heating">
-
+                <GridView ItemsSource="{x:Bind Data.Pictures}" ItemTemplate="{StaticResource PicturesTemplate}" IsItemClickEnabled="True" SelectionMode="None" ItemClick="GridView_ItemClick" ItemsPanel="{StaticResource PicturesPanel}"></GridView>
             </PivotItem>
             <PivotItem Header="Air Conditioning">
-
+                <GridView ItemsSource="{x:Bind Data.Pictures}" ItemTemplate="{StaticResource PicturesTemplate}" IsItemClickEnabled="True" SelectionMode="None" ItemClick="GridView_ItemClick" ItemsPanel="{StaticResource PicturesPanel}"></GridView>
             </PivotItem>
             <PivotItem Header="Maintenance">
-
+                <GridView ItemsSource="{x:Bind Data.Pictures}" ItemTemplate="{StaticResource PicturesTemplate}" IsItemClickEnabled="True" SelectionMode="None" ItemClick="GridView_ItemClick" ItemsPanel="{StaticResource PicturesPanel}"></GridView>
             </PivotItem>
             <!--#endregion-->
         </Pivot>
