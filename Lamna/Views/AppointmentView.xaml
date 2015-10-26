@@ -15,13 +15,53 @@
         </Grid.ChildrenTransitions>
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
-                <VisualState x:Name="LongState">
+
+                <VisualState x:Name="Narrow">
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowHeight="800"/>
+                        <AdaptiveTrigger MinWindowWidth="0"></AdaptiveTrigger>
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <!--<Setter Target="NameText.(RelativePanel.AlignLeftWithPanel)" Value="true"/>-->
-                        <Setter Target="NameText.FontSize" Value="31"/>
+
+                        <Setter Target="FirstPanel.(RelativePanel.AlignLeftWithPanel)" Value="true"></Setter>
+                        <Setter Target="SecondPanel.(RelativePanel.AlignLeftWithPanel)" Value="true"></Setter>
+                        <Setter Target="ThirdPanel.(RelativePanel.AlignLeftWithPanel)" Value="true"></Setter>
+
+                        <Setter Target="SecondPanel.(RelativePanel.Below)" Value="FirstPanel"></Setter>
+                        <Setter Target="ThirdPanel.(RelativePanel.Below)" Value="SecondPanel"></Setter>
+
+                        <Setter Target="FirstPanel.Width"  Value="320"></Setter>
+                        <Setter Target="SecondPanel.Width" Value="320"></Setter>
+                        <Setter Target="ThirdPanel.Width"  Value="320"></Setter>
+
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState x:Name="Narrowish">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="500"></AdaptiveTrigger>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="FirstPanel.(RelativePanel.AlignLeftWithPanel)" Value="true"></Setter>
+                        <Setter Target="SecondPanel.(RelativePanel.AlignLeftWithPanel)" Value="true"></Setter>
+                        <Setter Target="ThirdPanel.(RelativePanel.AlignLeftWithPanel)" Value="true"></Setter>
+
+                        <Setter Target="SecondPanel.(RelativePanel.Below)" Value="FirstPanel"></Setter>
+                        <Setter Target="ThirdPanel.(RelativePanel.Below)" Value="SecondPanel"></Setter>
+
+                        <Setter Target="FirstPanel.Width"  Value="450"></Setter>
+                        <Setter Target="SecondPanel.Width" Value="450"></Setter>
+                        <Setter Target="ThirdPanel.Width"  Value="450"></Setter>
+
+                    </VisualState.Setters>
+                </VisualState>
+
+                <VisualState x:Name="Mid">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="800"></AdaptiveTrigger>
+
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--<Setter Target="NameText.FontSize" Value="31"/>-->
                         <Setter Target="MainPivot.HeaderTemplate">
                             <Setter.Value>
                                 <DataTemplate>
@@ -29,23 +69,56 @@
                                 </DataTemplate>
                             </Setter.Value>
                         </Setter>
+
+                        <Setter Target="FirstPanel.(RelativePanel.AlignLeftWithPanel)" Value="true"></Setter>
+                        <Setter Target="SecondPanel.(RelativePanel.AlignRightWithPanel)" Value="true"></Setter>
+                        <Setter Target="ThirdPanel.(RelativePanel.AlignLeftWithPanel)" Value="true"></Setter>
+
+                        <Setter Target="ThirdPanel.(RelativePanel.Below)" Value="FirstPanel"></Setter>
+
+                        <Setter Target="FirstPanel.Width"  Value="360"></Setter>
+                        <Setter Target="SecondPanel.Width" Value="360"></Setter>
+                        <Setter Target="ThirdPanel.Width"  Value="360"></Setter>
                     </VisualState.Setters>
                 </VisualState>
-                
+
+                <VisualState x:Name="Wide">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="1150"></AdaptiveTrigger>
+
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <!--<Setter Target="NameText.FontSize" Value="31"/>-->
+                        <Setter Target="MainPivot.HeaderTemplate">
+                            <Setter.Value>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" Foreground="#FFFF6D40" FontSize="21" Margin="5"></TextBlock>
+                                </DataTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Setter Target="FirstPanel.(RelativePanel.AlignLeftWithPanel)" Value="true"></Setter>
+                        <Setter Target="SecondPanel.(RelativePanel.AlignHorizontalCenterWithPanel)" Value="true"></Setter>
+                        <Setter Target="ThirdPanel.(RelativePanel.AlignRightWithPanel)" Value="true"></Setter>
+
+                        <Setter Target="FirstPanel.Width"  Value="360"></Setter>
+                        <Setter Target="SecondPanel.Width" Value="360"></Setter>
+                        <Setter Target="ThirdPanel.Width"  Value="360"></Setter>
+                    </VisualState.Setters>
+                </VisualState>
+
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <Border Background="{StaticResource DarkColor1}" BorderBrush="{StaticResource LightColor1}" BorderThickness="0,0,0,1">
+        <!--<Border Background="{StaticResource DarkColor1}" BorderBrush="{StaticResource LightColor1}" BorderThickness="0,0,0,1">
             <Grid>
                 <TextBlock HorizontalAlignment="Center" x:Name="NameText" Text="{x:Bind Data.Address}" Margin="5" Foreground="#FFFF6D40" FontSize="20" ></TextBlock>
-                <Button Click="Button_Click" HorizontalAlignment="Right">
-                    <SymbolIcon Symbol="Camera" Foreground="White"></SymbolIcon>
-                </Button>
             </Grid>
-        </Border>
+        </Border>-->
         <Pivot x:Name="MainPivot" Foreground="#FFFF6D40" Grid.Row="1" Title="" Style="{StaticResource LamnaPivotStyle}">
             <Pivot.HeaderTemplate>
                 <DataTemplate>
@@ -54,42 +127,70 @@
             </Pivot.HeaderTemplate>
             <PivotItem Header="Details" Margin="0">
                 <Grid>
-                    <Grid x:Name="StaticMapImageContainer" Height="500" VerticalAlignment="Top">
-                        <Image Height="500" Source="ms-appx:///Assets/temp_map.jpg" HorizontalAlignment="Center" Stretch="UniformToFill"></Image>
-                        <Image x:Name="StaticMapImage" Height="700"  Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Grid x:Name="StaticMapImageContainer" Height="400" VerticalAlignment="Top">
+                        <Image Height="400" Source="ms-appx:///Assets/temp_map.jpg" HorizontalAlignment="Center" Stretch="UniformToFill"></Image>
+                        <Image x:Name="StaticMapImage" Height="500"  Stretch="UniformToFill" VerticalAlignment="Center" HorizontalAlignment="Center">
                             <!--<Image.RenderTransform>
                                 <CompositeTransform TranslateY="-200"></CompositeTransform>
                             </Image.RenderTransform>-->
                         </Image>
                     </Grid>
                     <ScrollViewer VerticalScrollMode="Auto" HorizontalScrollMode="Disabled" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                        <Border Padding="0,300,0,0" >
-                            <Grid Background="#FFFDDCC8">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <StackPanel Margin="4,0,4,0">
-                                    <TextBox Header="ID" IsEnabled="False" Text="2347-75243529853245"></TextBox>
-                                    <TextBox Header=" Customer" Text="{x:Bind Data.FamilyName, Mode=TwoWay}"></TextBox>
-                                    <TextBox Header="Property" Text="{x:Bind Data.Address, Mode=TwoWay}"></TextBox>
-                                </StackPanel>
-                                <StackPanel Grid.Column="1" Margin="4,0,4,0">
 
-                                    <TextBox Header="Agent" Text="John Smith"></TextBox>
-                                    <DatePicker Header="Date of Inspection"></DatePicker>
-                                    <ComboBox Header="Style of Home" SelectedIndex="0">
-                                        <x:String>Craftsman, Rambier</x:String>
-                                    </ComboBox>
-                                </StackPanel>
-                                <StackPanel Grid.Column="2" Margin="4,0,4,0">
-                                    <TextBox Header="Temperature" Text="Over 65F"></TextBox>
-                                    <TextBox Header="Rain" Text="No"></TextBox>
-                                    <TextBox Header="In Attendance" Text="Clinet and their agent"></TextBox>
-                                </StackPanel>
-                            </Grid>
-                        </Border>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="300"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                            <RelativePanel Height="300" >
+                                <TextBlock Text="{x:Bind Data.FamilyName}" RelativePanel.AlignBottomWithPanel="true" Margin="21,0,0,39" FontSize="32" TextTrimming="CharacterEllipsis" Foreground="Black"></TextBlock>
+                                <TextBlock Text="{x:Bind Data.FamilyName}" RelativePanel.AlignBottomWithPanel="true" Margin="19,0,0,41" FontSize="32" TextTrimming="CharacterEllipsis" Foreground="Black"></TextBlock>
+                                <TextBlock Text="{x:Bind Data.FamilyName}" RelativePanel.AlignBottomWithPanel="true" Margin="20,0,0,40" FontSize="32" TextTrimming="CharacterEllipsis" Foreground="#FFEAEAEA"></TextBlock>
+
+                                <TextBlock Text="{x:Bind Data.Address}" RelativePanel.AlignBottomWithPanel="true"  Margin="21,0,0,19" FontSize="20" TextTrimming="CharacterEllipsis" Foreground="Black"></TextBlock>
+                                <TextBlock Text="{x:Bind Data.Address}" RelativePanel.AlignBottomWithPanel="true" Margin="19,0,0,21" FontSize="20" TextTrimming="CharacterEllipsis" Foreground="Black"></TextBlock>
+                                <TextBlock Text="{x:Bind Data.Address}" RelativePanel.AlignBottomWithPanel="true" Margin="20,0,0,20" FontSize="20" TextTrimming="CharacterEllipsis" Foreground="#FFEAEAEA"></TextBlock>
+                            </RelativePanel>
+                            <Border Background="#FFFDDCC8" Grid.Row="1" Grid.RowSpan="2"></Border>
+
+                            <RelativePanel Grid.Row="1" Padding="20, 0">
+
+                                <Border  x:Name="FirstPanel" Padding="4, 20"  >
+                                    <StackPanel>
+                                        <TextBox Header="ID" IsEnabled="False" Text="2347-75243529853245" Style="{StaticResource LamnaTextBoxStyle}"></TextBox>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border  x:Name="SecondPanel" Padding="4, 20" >
+                                    <StackPanel>
+                                        <TextBox Header="Agent" Text="John Smith" Style="{StaticResource LamnaTextBoxStyle}"></TextBox>
+                                        <DatePicker Header="Date of Inspection" Style="{StaticResource LamnaDatePickerStyle}"></DatePicker>
+                                        <TimePicker Header="Time of Inspection" Style="{StaticResource LamnaTimePickerStyle}"></TimePicker>
+                                        <ComboBox Header="Style of Home" SelectedIndex="0" FontSize="16" Style="{StaticResource LamnaComboBoxStyle}">
+                                            <x:String>Craftsman, Rambier</x:String>
+                                        </ComboBox>
+                                    </StackPanel>
+                                </Border>
+
+                                <Border  x:Name="ThirdPanel" Padding="4, 20"  >
+                                    <StackPanel>
+                                        <TextBox Header="Temperature" Text="Over 65F" Style="{StaticResource LamnaTextBoxStyle}"></TextBox>
+                                        <TextBox Header="Rain" Text="No" Style="{StaticResource LamnaTextBoxStyle}"></TextBox>
+                                        <TextBox Header="In Attendance" Text="Clinet and their agent" Style="{StaticResource LamnaTextBoxStyle}"></TextBox>
+                                    </StackPanel>
+                                </Border>
+
+                                
+                            </RelativePanel>
+
+                            <Border Margin="20" Grid.Row="2" HorizontalAlignment="Stretch">
+                                <RichEditBox PlaceholderText="Notes:" Height="200"></RichEditBox>
+                            </Border>
+
+
+                        </Grid>
                     </ScrollViewer>
                 </Grid>
             </PivotItem>
@@ -141,27 +242,24 @@
             </PivotItem>
             <!--#endregion-->
         </Pivot>
+        
 
         <Grid x:Name="InkerContainer" Grid.RowSpan="2" Visibility="Collapsed">
             <InkCanvas x:Name="Inker" ></InkCanvas>
         </Grid>
 
+        <CommandBar Grid.Row="2" Background="{StaticResource DarkColor1}" RequestedTheme="Dark">
+            <AppBarButton x:Name="CameraButton" Icon="Camera" Label="Capture" Click="Button_Click" Foreground="#FFFF6D40"/>
+            <AppBarButton x:Name="GenerateButton" Icon="PostUpdate" Label="Generate Report" Foreground="#FFFF6D40"/>
+
+            <AppBarButton x:Name="CancelButton" HorizontalAlignment="Center" Icon="Cancel" Label="Cancel" Click="DiscardPictureClicked" Visibility="Collapsed"></AppBarButton>
+            <AppBarButton x:Name="SaveButton" HorizontalAlignment="Center" Icon="Save" Label="Save" Click="SavePictureClicked" Visibility="Collapsed"></AppBarButton>
+        </CommandBar>
+
         <Grid x:Name="EditorContainer" Grid.RowSpan="2" Visibility="Collapsed" >
-
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition Height="50" />
-            </Grid.RowDefinitions>
-
             <local:PictureEditor x:Name="Editor"></local:PictureEditor>
-            
-            <Border Grid.Row="1" Height="50" Background="Black">
-                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                    <Button Foreground="White" Content="Discard" Margin="20, 5" Click="DiscardPictureClicked"></Button>
-                    <Button Foreground="White" Content="Save" Margin="20, 5" Click="SavePictureClicked"></Button>
-                </StackPanel>
-            </Border>
         </Grid>
-        
+
+
     </Grid>
 </Page>

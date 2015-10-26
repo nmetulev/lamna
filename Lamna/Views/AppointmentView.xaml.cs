@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI;
+using Windows.UI.Core;
 using Windows.UI.Input.Inking;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -48,11 +49,11 @@ namespace Lamna.Views
             if (e.Parameter != null)
             {
                 Data = await DataSource.GetInstance().GetAppointmentAsync(e.Parameter as string) ;
-                StaticMapImage.Source = new BitmapImage(MapService.GetAerialImageUrl(Data.Location, 19, 2000, 700));
+                StaticMapImage.Source = new BitmapImage(MapService.GetAerialImageUrl(Data.Location, 19, 2000, 500));
 
             }
 
-
+            //SystemNavigationManager.GetForCurrentView().BackRequested += BackButtonBackRequested;
 
             InitializeInker();
             
@@ -61,7 +62,17 @@ namespace Lamna.Views
         protected async override void OnNavigatingFrom(NavigatingCancelEventArgs e)
         {
             await DataSource.GetInstance().UpdateAppointmentsAsync();
+            //SystemNavigationManager.GetForCurrentView().BackRequested -= BackButtonBackRequested;
         }
+
+        //private void BackButtonBackRequested(object sender, BackRequestedEventArgs e)
+        //{
+        //    if (EditorContainer.Visibility == Visibility.Visible)
+        //    {
+        //        CloseEditor();
+        //        e.Handled = true;
+        //    }
+        //}
 
         private void InitializeInker()
         {
@@ -127,7 +138,7 @@ namespace Lamna.Views
                         new Size(result.BoundingRect.Width, result.BoundingRect.Height)), 
                     this));
 
-                TextBox box = elements.Where(el => el is TextBox && (el as TextBox).IsEnabled).First() as TextBox;
+                TextBox box = elements.Where(el => el is TextBox && (el as TextBox).IsEnabled).FirstOrDefault() as TextBox;
 
                 if (box != null)
                 {
@@ -166,17 +177,34 @@ namespace Lamna.Views
             var pic = e.ClickedItem as LocationPicture;
             Editor.Picture = pic;
             EditorContainer.Visibility = Visibility.Visible;
+
+            CameraButton.Visibility = Visibility.Collapsed;
+            GenerateButton.Visibility = Visibility.Collapsed;
+            SaveButton.Visibility = Visibility.Visible;
+            CancelButton.Visibility = Visibility.Visible;
         }
 
         private void DiscardPictureClicked(object sender, RoutedEventArgs e)
         {
-            EditorContainer.Visibility = Visibility.Collapsed;
+            CloseEditor();
         }
 
         private void SavePictureClicked(object sender, RoutedEventArgs e)
         {
-            EditorContainer.Visibility = Visibility.Collapsed;
+            CloseEditor();
             Editor.SavePicture();
         }
+
+        private void CloseEditor()
+        {
+            EditorContainer.Visibility = Visibility.Collapsed;
+
+            CameraButton.Visibility = Visibility.Visible;
+            GenerateButton.Visibility = Visibility.Visible;
+            SaveButton.Visibility = Visibility.Collapsed;
+            CancelButton.Visibility = Visibility.Collapsed;
+        }
+
+        
     }
 }
