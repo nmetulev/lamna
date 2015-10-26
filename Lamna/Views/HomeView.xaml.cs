@@ -10,6 +10,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Maps;
@@ -74,20 +75,37 @@ namespace Lamna.Views
             InProgress = new List<Appointment>(appointments.Where(x => x.InProgress == true));
 
             Window.Current.SizeChanged += Current_SizeChanged;
-            
+            ApplicationView.GetForCurrentView().VisibleBoundsChanged += VisibleBoundsChanged;
+
+
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             Window.Current.SizeChanged -= Current_SizeChanged;
+            ApplicationView.GetForCurrentView().VisibleBoundsChanged -= VisibleBoundsChanged;
 
+        }
+
+        private void VisibleBoundsChanged(ApplicationView sender, object args)
+        {
+            SetSize();
         }
 
         private void Current_SizeChanged(object sender, Windows.UI.Core.WindowSizeChangedEventArgs e)
         {
-            if (!_floaterActive && e.Size.Width < 700)
+            SetSize();
+        }
+
+        private void SetSize()
+        {
+            var height = ApplicationView.GetForCurrentView().VisibleBounds.Height;
+            var width = ApplicationView.GetForCurrentView().VisibleBounds.Width;
+            //var height = Window.Current.Bounds.Height;
+
+            if (!_floaterActive && width < 700)
             {
-                FloaterTransform.TranslateY = e.Size.Height - 110;
+                FloaterTransform.TranslateY = height - 110;
             }
             else if (!_floaterActive)
             {
@@ -109,11 +127,14 @@ namespace Lamna.Views
 
         private void ToggleFloater()
         {
+            var height = ApplicationView.GetForCurrentView().VisibleBounds.Height;
+            //var height = Window.Current.Bounds.Height;
+
             if (_floaterActive)
             {
                 _floaterActive = false;
                 FloaterTransformAnimation.From = 0;
-                FloaterTransformAnimation.To = Window.Current.Bounds.Height - 110;
+                FloaterTransformAnimation.To = height - 110;
                 FloaterStoryboard.Stop();
                 FloaterStoryboard.Begin();
 
@@ -126,7 +147,7 @@ namespace Lamna.Views
             {
                 _floaterActive = true;
                 FloaterTransformAnimation.To = 0;
-                FloaterTransformAnimation.From = Window.Current.Bounds.Height - 110;
+                FloaterTransformAnimation.From = height - 110;
 
                 FloaterStoryboard.Stop();
                 FloaterStoryboard.Begin();

@@ -47,6 +47,8 @@ namespace Lamna
             if (ApiInformation.IsTypePresent(typeof(StatusBar).FullName))
             {
                 StatusBar.GetForCurrentView().HideAsync();
+                //Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
+                ApplicationView.GetForCurrentView().VisibleBoundsChanged += MainPage_VisibleBoundsChanged;
             }
 
             RootFrame.Navigated += RootFrame_Navigated;
@@ -56,6 +58,8 @@ namespace Lamna
 
             RootFrame.Navigate(typeof(Views.HomeView));
         }
+
+        
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -100,6 +104,16 @@ namespace Lamna
 
         private void MainPage_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            UpdateSize();
+
+        }
+
+        private void UpdateSize()
+        {
+            var height = ApplicationView.GetForCurrentView().VisibleBounds.Height;
+            var width = ApplicationView.GetForCurrentView().VisibleBounds.Width;
+            //var height = Window.Current.Bounds.Height;
+
             if (locked)
             {
                 //ContentTransform.TranslateY = e.NewSize.Height;
@@ -107,18 +121,26 @@ namespace Lamna
             }
             else
             {
-               // ContentTransform.TranslateY = 20;
-                LockScreenTransform.TranslateY = -e.NewSize.Height + 20;
+                // ContentTransform.TranslateY = 20;
+                LockScreenTransform.TranslateY = -height + 20;
             }
 
-            Content.Height = e.NewSize.Height - 20;
-            ContentTransform.CenterX = e.NewSize.Width / 2;
-            ContentTransform.CenterY = e.NewSize.Height / 2;
-            
+            Content.Height = height - 20;
+            ContentTransform.CenterX = width / 2;
+            ContentTransform.CenterY = height / 2;
+        }
+
+        private void MainPage_VisibleBoundsChanged(ApplicationView sender, object args)
+        {
+            UpdateSize();
         }
 
         private void Unlock()
         {
+            var height = ApplicationView.GetForCurrentView().VisibleBounds.Height;
+            //var height = Window.Current.Bounds.Height;
+
+            passwordbox_Password.IsEnabled = false;
             locked = false;
 
             LoginAnimation.Stop();
@@ -131,8 +153,8 @@ namespace Lamna
 
             ContentShadeAnimation.To = 0;
             ContentShadeAnimation.From = 1;
-
-            LockScreenAnimation.To = -Window.Current.Bounds.Height + 20;
+            
+            LockScreenAnimation.To = -height + 20;
             LockScreenAnimation.From = 0;
 
             CityAnimation.To = 60;
@@ -156,6 +178,10 @@ namespace Lamna
         {
             if (!locked)
             {
+                var height = ApplicationView.GetForCurrentView().VisibleBounds.Height;
+                //var height = Window.Current.Bounds.Height;
+
+                passwordbox_Password.IsEnabled = true;
                 locked = true;
 
                 LoginAnimation.Stop();
@@ -170,7 +196,7 @@ namespace Lamna
                 ContentShadeAnimation.From = 0;
 
                 LockScreenAnimation.To = 0;
-                LockScreenAnimation.From = -Window.Current.Bounds.Height + 20;
+                LockScreenAnimation.From = -height + 20;
 
                 CityAnimation.To = 0;
                 CityAnimation.From = 60;
