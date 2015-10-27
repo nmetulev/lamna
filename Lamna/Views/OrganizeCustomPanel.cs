@@ -12,6 +12,11 @@ namespace Lamna.Views
         {
             var resultSize = new Size(0, 0);
 
+            if (!this.Children.Any())
+            {
+                return resultSize;
+            }
+
             double y = 0;
             double x = 0;
 
