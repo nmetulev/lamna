@@ -281,7 +281,8 @@ namespace Lamna
         {
             textblock_ErrorField.Text = "";
 
-            if (textbox_Username.Text.Length == 0 || passwordbox_Password.Password.Length == 0)
+            bool showError = calledFromPassport? (textbox_Username.Text.Length == 0  ) : (textbox_Username.Text.Length == 0 || passwordbox_Password.Password.Length == 0);
+            if (showError)
             {
                 textblock_ErrorField.Text = "Username/Password cannot be blank.";
                 return false;
