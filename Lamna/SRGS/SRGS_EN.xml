@@ -22,14 +22,92 @@ xmlns="http://www.w3.org/2001/06/grammar">
         <ruleref uri="#SpecifyDefect" />
         <tag>out.KEY_DEFECT=rules.latest(); </tag>
       </item>
+
+      <item>
+        <ruleref uri="#ChangeColor" />
+        <tag>out.KEY_COLOR=rules.latest(); </tag>
+      </item>
+
+      <item>
+        <ruleref uri="#ChangeSize" />
+        <tag>out.KEY_SIZE=rules.latest(); </tag>
+      </item>
     </one-of>
     
   </rule>
 
 
+  <rule id="ChangeColor">
+    <one-of>
+      <item>
+        <one-of>
+          <item>
+            draw in
+          </item>
+          <item>
+            change to
+          </item>
+          <item>
+            do
+          </item>
+        </one-of>
+        <item>
+          <ruleref uri="#color" />
+        </item>
+      </item>
+    </one-of>
+  </rule>
+
+  <rule id="color">
+    <one-of>
+      <item>
+        red <tag>out="Red";</tag>
+      </item>
+      <item>
+        yellow <tag>out="Yellow";</tag>
+      </item>
+      <item>
+        green <tag>out="Green";</tag>
+      </item>
+      <item>
+        purple <tag>out="Purple";</tag>
+      </item>
+      <item>
+        brown <tag>out="Brown";</tag>
+      </item>
+      <item>
+        pink <tag>out="Pink";</tag>
+      </item>
+      <item>
+        blue <tag>out="Blue";</tag>
+      </item>
+      <item>
+        white <tag>out="White";</tag>
+      </item>
+      <item>
+        gray <tag>out="Gray";</tag>
+      </item>
+    </one-of>
+  </rule>
+
+  <rule id="ChangeSize">
+    <one-of>
+      <item>increase size<tag>out="+";</tag></item>
+
+      <item>decrease size<tag>out="-";</tag></item>
+    </one-of>
+  </rule>
+
+
   <rule id="AddNote">
     <one-of>
-      <item>add note</item>
+      <item>
+        add
+        <item repeat="0-1">
+          a
+        </item>
+        note
+    </item>
 
       <item>note this</item>
 
@@ -139,10 +217,16 @@ xmlns="http://www.w3.org/2001/06/grammar">
         little <tag>out="Minor";</tag>
       </item>
       <item>
+        small <tag>out="Minor";</tag>
+      </item>
+      <item>
         major <tag>out="Major";</tag>
       </item>
       <item>
         large <tag>out="Major";</tag>
+      </item>
+      <item>
+        big <tag>out="Major";</tag>
       </item>
     </one-of>
   </rule>

@@ -11,6 +11,7 @@ using Windows.Foundation.Metadata;
 using Windows.Security.Credentials;
 using Windows.Security.Cryptography;
 using Windows.Storage.Streams;
+using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -46,10 +47,20 @@ namespace Lamna
 
             if (ApiInformation.IsTypePresent(typeof(StatusBar).FullName))
             {
-                StatusBar.GetForCurrentView().HideAsync();
+                var bar = StatusBar.GetForCurrentView();
+                bar.BackgroundColor = Colors.PeachPuff;
+                bar.ForegroundColor = Colors.White;
+
+             //   StatusBar.GetForCurrentView().HideAsync();
                 //Windows.UI.ViewManagement.ApplicationView.GetForCurrentView().SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
                 ApplicationView.GetForCurrentView().VisibleBoundsChanged += MainPage_VisibleBoundsChanged;
             }
+            else
+            {
+                
+            }
+
+            
 
             RootFrame.Navigated += RootFrame_Navigated;
             SystemNavigationManager.GetForCurrentView().BackRequested += BackButtonBackRequested; ;
@@ -122,10 +133,10 @@ namespace Lamna
             else
             {
                 // ContentTransform.TranslateY = 20;
-                LockScreenTransform.TranslateY = -height + 20;
+                LockScreenTransform.TranslateY = -height;// + 20;
             }
 
-            Content.Height = height - 20;
+            Content.Height = height;// - 20;
             ContentTransform.CenterX = width / 2;
             ContentTransform.CenterY = height / 2;
         }
@@ -153,8 +164,8 @@ namespace Lamna
 
             ContentShadeAnimation.To = 0;
             ContentShadeAnimation.From = 1;
-            
-            LockScreenAnimation.To = -height + 20;
+
+            LockScreenAnimation.To = -height;// + 20;
             LockScreenAnimation.From = 0;
 
             CityAnimation.To = 60;
@@ -196,7 +207,7 @@ namespace Lamna
                 ContentShadeAnimation.From = 0;
 
                 LockScreenAnimation.To = 0;
-                LockScreenAnimation.From = -height + 20;
+                LockScreenAnimation.From = -height;// + 20;
 
                 CityAnimation.To = 0;
                 CityAnimation.From = 60;

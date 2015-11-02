@@ -10,6 +10,14 @@
 
     <Page.Resources>
         <SolidColorBrush x:Key="TranslucentBlackBrush" Color="Black" Opacity="0.3"/>
+
+        <Storyboard x:Name="FeedbackStoryboard" Duration="0:0:3">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="FeedbackText" Storyboard.TargetProperty="Opacity">
+                <SplineDoubleKeyFrame KeyTime="0:0:0" Value="1"></SplineDoubleKeyFrame>
+                <SplineDoubleKeyFrame KeyTime="0:0:2" Value="0.8"></SplineDoubleKeyFrame>
+                <SplineDoubleKeyFrame KeyTime="0:0:3" Value="0"></SplineDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </Page.Resources>
 
     <Grid>
@@ -45,7 +53,7 @@
                 </Grid>
             </Viewbox>
             
-            <inkTools:InkToolbar TargetInkCanvas="{x:Bind Inker}" Margin="8" PenColor="#FFE61021" VerticalAlignment="Top" HorizontalAlignment="Right" HighlighterVisibility="Collapsed" ButtonBackground="{x:Null}" ButtonForeground="White" ></inkTools:InkToolbar>
+            <inkTools:InkToolbar Name="InkToolbar" TargetInkCanvas="{x:Bind Inker}" Margin="8" PenColor="#FFE61021" VerticalAlignment="Top" HorizontalAlignment="Right" HighlighterVisibility="Collapsed" ButtonBackground="{x:Null}" ButtonForeground="White" ></inkTools:InkToolbar>
 
             <Border VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,10,0">
                 
@@ -69,7 +77,7 @@
         <Border x:Name="Flash" Background="White" Opacity="0" IsHitTestVisible="False"></Border>
 
         <RelativePanel Padding="20" IsHitTestVisible="False">
-            <Grid  x:Name="LocationText">
+            <Grid  x:Name="LocationText" IsHitTestVisible="False">
                 <TextBlock Foreground="Black" Margin="1,1,0,0" FontSize="25" Opacity="0.5" FontFamily="Segoe UI Semibold">
                     <Bold>LOCATION: </Bold>
                     <Run Text="{Binding LocationTextContent, FallbackValue=N/A}"></Run>
@@ -80,7 +88,7 @@
                 </TextBlock>
             </Grid>
 
-            <Grid x:Name="DefectText" RelativePanel.Below="LocationText">
+            <Grid x:Name="DefectText" RelativePanel.Below="LocationText" IsHitTestVisible="False">
                 <TextBlock   Foreground="Black" Margin="1,1,0,0" FontSize="25" Opacity="0.5" FontFamily="Segoe UI Semibold">
                 <Bold>DEFECT: </Bold>
                 <Run Text="{Binding DefectTextContent, FallbackValue=N/A}"></Run>
@@ -91,13 +99,13 @@
                 </TextBlock>
             </Grid>
 
-            <Grid x:Name="ListeningText" RelativePanel.Above="NoteText" Visibility="Collapsed">
+            <Grid x:Name="ListeningText" RelativePanel.Above="NoteText" Visibility="Collapsed" IsHitTestVisible="False">
                 <TextBlock  Foreground="Black" Margin="1,1,0,0" FontSize="15" Opacity="0.5" >listening...</TextBlock>
                 <TextBlock  Foreground="White" FontSize="15" >listening...</TextBlock>
                 <!--<ProgressRing Foreground="Black" IsActive="True"></ProgressRing>-->
             </Grid>
 
-            <Grid x:Name="NoteText" RelativePanel.AlignBottomWithPanel="True" >
+            <Grid x:Name="NoteText" RelativePanel.AlignBottomWithPanel="True" IsHitTestVisible="False">
                 <TextBlock Foreground="Black" Margin="1,1,0,0" FontSize="25" Opacity="0.5" FontFamily="Segoe UI Semibold">
                 <Bold>NOTE: </Bold>
                 <Run Text="{Binding NoteTextContent, FallbackValue=N/A}"></Run>
@@ -106,6 +114,11 @@
                 <Bold>NOTE: </Bold>
                 <Run Text="{Binding NoteTextContent, FallbackValue=N/A}"></Run>
                 </TextBlock>
+            </Grid>
+
+            <Grid x:Name="FeedbackText" RelativePanel.AlignHorizontalCenterWithPanel="True" RelativePanel.Below="DefectText" Opacity="0" IsHitTestVisible="False">
+                <TextBlock Name="FeedbackTextContentShadow" Margin="1,1,0,0" FontSize="25" Opacity="0.5" FontFamily="Segoe UI Semibold" Foreground="Black"></TextBlock>
+                <TextBlock Name="FeedbackTextContent" FontSize="25" FontFamily="Segoe UI Semibold" Foreground="White"></TextBlock>
             </Grid>
             
         </RelativePanel>

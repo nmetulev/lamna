@@ -4,11 +4,13 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
+using Windows.ApplicationModel.Resources.Core;
 using Windows.Devices.Enumeration;
 using Windows.Devices.Sensors;
 using Windows.Foundation;
@@ -179,6 +181,15 @@ namespace Lamna.Views
                                 CoreInputDeviceTypes.Pen | 
                                 CoreInputDeviceTypes.Touch | 
                                 CoreInputDeviceTypes.Mouse;
+
+            var qualifiers = ResourceContext.GetForCurrentView().QualifierValues;
+            if (qualifiers.ContainsKey("DeviceFamily") && qualifiers["DeviceFamily"] == "Mobile")
+            {
+                InkToolbar.PenSize = new Size(15, 15);
+            }
+            else
+                InkToolbar.PenSize = new Size(10, 10);
+
         }
 
 
@@ -393,6 +404,74 @@ namespace Lamna.Views
                 
             }
 
+            if (recoResult.SemanticInterpretation.Properties.ContainsKey("KEY_COLOR") 
+                && PreviewContainer.Visibility != Visibility.Collapsed)
+            {
+                Debug.WriteLine("Color change");
+
+                string color = recoResult.SemanticInterpretation.Properties["KEY_COLOR"][0].ToString();
+
+                InkToolbar.PenColor = ColorFromName(color);
+
+                ShowFeedback("color changed: " + color);
+
+            }
+
+            if (recoResult.SemanticInterpretation.Properties.ContainsKey("KEY_SIZE")
+                && PreviewContainer.Visibility != Visibility.Collapsed)
+            {
+                Debug.WriteLine("SIZE change");
+                if (PreviewContainer.Visibility == Visibility.Collapsed) return;
+
+                string size = recoResult.SemanticInterpretation.Properties["KEY_SIZE"][0].ToString();
+
+                var newSize = InkToolbar.PenSize;
+
+                switch (size)
+                {
+                    case "+":
+                        newSize.Height += 4;
+                        newSize.Width += 4;
+                        InkToolbar.PenSize = newSize;
+                        ShowFeedback("size increased");
+                        break;
+                    case "-":
+                        newSize.Height -= newSize.Height < 5 ? (newSize.Height - 1) : 4;
+                        newSize.Width -= newSize.Width < 5 ? (newSize.Width - 1) : 4;
+                        InkToolbar.PenSize = newSize;
+                        ShowFeedback("size decreased");
+                        break;
+                    default:
+                        return;
+                }
+
+                
+
+            }
+
+        }
+
+        private void ShowFeedback(string feedback)
+        {
+            feedback = feedback.ToUpper();
+            FeedbackTextContent.Text = feedback;
+            FeedbackTextContentShadow.Text = feedback;
+            FeedbackStoryboard.Stop();
+            FeedbackStoryboard.Begin();
+        }
+
+        private Color ColorFromName(string name)
+        {
+            var type = typeof(Colors).GetTypeInfo();
+            var prop = type.GetDeclaredProperty(name);
+            if (null == prop)
+            {
+                return Colors.Transparent;
+            }
+            else
+            {
+                return (Color)prop.GetValue(null);
+            }
         }
 
         #endregion

@@ -92,7 +92,7 @@
                     <Border Background="#66808080" Padding="1" Margin="0,0,0,5">
                         <Grid>
                             <StackPanel VerticalAlignment="Top" IsHitTestVisible="False" Background="#FF3A3939" Padding="10">
-                                <TextBlock Text="Hi Giorgio" HorizontalAlignment="Center" FontSize="30" Foreground="Gainsboro"></TextBlock>
+                                <TextBlock Text="Hi Nikola" HorizontalAlignment="Center" FontSize="30" Foreground="Gainsboro"></TextBlock>
                                 <TextBlock Text="Here is your day!" HorizontalAlignment="Center" Foreground="#FFBFBFBF"></TextBlock>
                             </StackPanel>
 
