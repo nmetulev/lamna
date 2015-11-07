@@ -6,8 +6,12 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Graphics.Imaging;
+using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Input.Inking;
@@ -211,6 +215,54 @@ namespace Lamna.Views
             CancelButton.Visibility = Visibility.Collapsed;
         }
 
-        
+        private async void PasteClicked(object sender, RoutedEventArgs e)
+        {
+            Button bt = sender as Button;
+            bt.IsEnabled = false;
+            var dataPackageView = Windows.ApplicationModel.DataTransfer.Clipboard.GetContent();
+            if (dataPackageView.Contains(StandardDataFormats.Bitmap))
+            {
+                IRandomAccessStreamReference imageReceived = null;
+
+                try
+
+                {
+
+                    imageReceived = await dataPackageView.GetBitmapAsync();
+                    var id = Guid.NewGuid().ToString();
+                    using (var stream = await imageReceived.OpenReadAsync())
+                    {
+                        var decoder = await BitmapDecoder.CreateAsync(stream);
+
+                        var localFolder = ApplicationData.Current.LocalFolder;
+                        var file = await localFolder.CreateFileAsync(id + ".jpg", CreationCollisionOption.ReplaceExisting);
+
+                        using (var outputStream = await file.OpenAsync(FileAccessMode.ReadWrite))
+                        {
+                            var encoder = await BitmapEncoder.CreateForTranscodingAsync(outputStream, decoder);
+                            await encoder.FlushAsync();
+                        }
+                    }
+
+                    LocationPicture pic = new LocationPicture();
+                    pic.ID = id;
+                    pic.RawImageUri = pic.ImageUri = "ms-appdata:///local/" + id + ".jpg";
+                    pic.Location = LocationEnumaration.Roof; //TODO
+
+                    Data.Pictures.Add(pic);
+
+                }
+                catch (Exception ex)
+
+                {
+
+                }
+
+
+            }
+            bt.IsEnabled = true;
+
+        }
+
     }
 }

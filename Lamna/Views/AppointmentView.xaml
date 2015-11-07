@@ -209,7 +209,15 @@
             <!--#region PivotItems-->
             
             <PivotItem Header="Roof and Exterior">
-                <GridView ItemsSource="{x:Bind Data.Pictures}" ItemTemplate="{StaticResource PicturesTemplate}" IsItemClickEnabled="True" SelectionMode="None" ItemClick="GridView_ItemClick" ItemsPanel="{StaticResource PicturesPanel}"></GridView>
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <GridView ItemsSource="{x:Bind Data.Pictures}" ItemTemplate="{StaticResource PicturesTemplate}" IsItemClickEnabled="True" SelectionMode="None" ItemClick="GridView_ItemClick" ItemsPanel="{StaticResource PicturesPanel}"></GridView>
+                    <Button Content="Paste Image From Clipboard" Click="PasteClicked"></Button>
+                </Grid>
             </PivotItem>
             <PivotItem Header="Garage">
                 <GridView ItemsSource="{x:Bind Data.Pictures}" ItemTemplate="{StaticResource PicturesTemplate}" IsItemClickEnabled="True" SelectionMode="None" ItemClick="GridView_ItemClick" ItemsPanel="{StaticResource PicturesPanel}"></GridView>
