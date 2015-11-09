@@ -346,9 +346,17 @@ namespace Lamna.Views
             bt.IsEnabled = true;
         }
 
-        private void GenerateButton_Click(object sender, RoutedEventArgs e)
+        private async void GenerateButton_Click(object sender, RoutedEventArgs e)
         {
+            Button bt = sender as Button;
+            bt.IsEnabled = false;
+            var file = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFileAsync(@"Report.docx");
 
+            if (file != null)
+            {
+                await Windows.System.Launcher.LaunchFileAsync(file);
+            }
+            bt.IsEnabled = true;
         }
 
         private async void DeleteButton_Click(object sender, RoutedEventArgs e)
