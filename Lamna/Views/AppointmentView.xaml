@@ -208,16 +208,8 @@
             
             <!--#region PivotItems-->
             
-            <PivotItem Header="Roof and Exterior">
-                <Grid>
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <GridView ItemsSource="{x:Bind Data.Pictures}" ItemTemplate="{StaticResource PicturesTemplate}" IsItemClickEnabled="True" SelectionMode="None" ItemClick="GridView_ItemClick" ItemsPanel="{StaticResource PicturesPanel}"></GridView>
-                    <Button Content="Paste Image From Clipboard" Click="PasteClicked"></Button>
-                </Grid>
+            <!--<PivotItem Header="Roof and Exterior">
+                <GridView ItemsSource="{x:Bind Data.Pictures}" ItemTemplate="{StaticResource PicturesTemplate}" IsItemClickEnabled="True" SelectionMode="None" ItemClick="GridView_ItemClick" ItemsPanel="{StaticResource PicturesPanel}"></GridView>
             </PivotItem>
             <PivotItem Header="Garage">
                 <GridView ItemsSource="{x:Bind Data.Pictures}" ItemTemplate="{StaticResource PicturesTemplate}" IsItemClickEnabled="True" SelectionMode="None" ItemClick="GridView_ItemClick" ItemsPanel="{StaticResource PicturesPanel}"></GridView>
@@ -245,7 +237,7 @@
             </PivotItem>
             <PivotItem Header="Maintenance">
                 <GridView ItemsSource="{x:Bind Data.Pictures}" ItemTemplate="{StaticResource PicturesTemplate}" IsItemClickEnabled="True" SelectionMode="None" ItemClick="GridView_ItemClick" ItemsPanel="{StaticResource PicturesPanel}"></GridView>
-            </PivotItem>
+            </PivotItem>-->
             <!--#endregion-->
         </Pivot>
         
@@ -255,11 +247,17 @@
         </Grid>
 
         <CommandBar Grid.Row="2" Background="{StaticResource DarkColor1}" RequestedTheme="Dark">
-            <AppBarButton x:Name="CameraButton" Icon="Camera" Label="Capture" Click="Button_Click" Foreground="#FFFF6D40"/>
-            <AppBarButton x:Name="GenerateButton" Icon="PostUpdate" Label="Generate Report" Foreground="#FFFF6D40"/>
+            <AppBarButton x:Name="PasteImageButton" Icon="Paste" Label="Add From Clipboard" Click="PasteImageButton_Click" ></AppBarButton>
+            <AppBarSeparator x:Name="CommandSeperator" />
+            <AppBarButton x:Name="CameraButton" Icon="Camera" Label="Capture" Click="CameraButton_Click" />
 
-            <AppBarButton x:Name="CancelButton" HorizontalAlignment="Center" Icon="Cancel" Label="Cancel" Click="DiscardPictureClicked" Visibility="Collapsed"></AppBarButton>
-            <AppBarButton x:Name="SaveButton" HorizontalAlignment="Center" Icon="Save" Label="Save" Click="SavePictureClicked" Visibility="Collapsed"></AppBarButton>
+            <AppBarButton x:Name="DeleteButton" Icon="Delete" Label="Delete" Click="DeleteButton_Click" Visibility="Collapsed"></AppBarButton>
+            <AppBarButton x:Name="CancelButton" Icon="Cancel" Label="Cancel" Click="DiscardPictureClicked" Visibility="Collapsed"></AppBarButton>
+            <AppBarButton x:Name="SaveButton" Icon="Save" Label="Save" Click="SavePictureClicked" Visibility="Collapsed"></AppBarButton>
+
+            <CommandBar.SecondaryCommands>
+                <AppBarButton x:Name="GenerateButton" Icon="PostUpdate" Label="Generate Report" Click="GenerateButton_Click"/>
+            </CommandBar.SecondaryCommands>
         </CommandBar>
 
         <Grid x:Name="EditorContainer" Grid.RowSpan="2" Visibility="Collapsed" >

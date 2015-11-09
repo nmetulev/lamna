@@ -1,6 +1,7 @@
 ﻿using Lamna.Data;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -41,6 +42,8 @@ namespace Lamna.Views
         public Appointment Data{ get; set; }
         DispatcherTimer timer;
 
+        Dictionary<string, ObservableCollection<LocationPicture>> Pictures;
+
         public AppointmentView()
         {
             this.InitializeComponent();
@@ -48,9 +51,40 @@ namespace Lamna.Views
             timer.Tick += Timer_Tick;
             timer.Interval = TimeSpan.FromSeconds(3);
 
+            Pictures = new Dictionary<string, ObservableCollection<LocationPicture>>();
+            Pictures.Add("Roof", new ObservableCollection<LocationPicture>());
+            Pictures.Add("Garage", new ObservableCollection<LocationPicture>());
+            Pictures.Add("Exterior", new ObservableCollection<LocationPicture>());
+            Pictures.Add("Electrical", new ObservableCollection<LocationPicture>());
+            Pictures.Add("Plumbing", new ObservableCollection<LocationPicture>());
+            Pictures.Add("Kitchen", new ObservableCollection<LocationPicture>());
+            Pictures.Add("Bathroom", new ObservableCollection<LocationPicture>());
+            Pictures.Add("Heating", new ObservableCollection<LocationPicture>());
+            Pictures.Add("Air Conditioning", new ObservableCollection<LocationPicture>());
+            Pictures.Add("Interior", new ObservableCollection<LocationPicture>());
+
+            foreach (var item in Pictures)
+            {
+                var pivotItem = new PivotItem() { Header = item.Key };
+                var gridview = new GridView()
+                {
+                    ItemsSource = item.Value,
+                    ItemTemplate = this.Resources["PicturesTemplate"] as DataTemplate,
+                    IsItemClickEnabled = true,
+                    SelectionMode = ListViewSelectionMode.None,
+                    ItemsPanel = Resources["PicturesPanel"] as ItemsPanelTemplate
+                };
+
+                gridview.ItemClick += GridView_ItemClick;
+
+                pivotItem.Content = gridview;
+                MainPivot.Items.Add(pivotItem);
+            }
+
+            MainPivot.SelectionChanged += MainPivot_SelectionChanged;
+
         }
 
-        
 
         protected async override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -58,8 +92,14 @@ namespace Lamna.Views
             {
                 Data = await DataSource.GetInstance().GetAppointmentAsync(e.Parameter as string) ;
                 StaticMapImage.Source = new BitmapImage(MapService.GetAerialImageUrl(Data.Location, 19, 2000, 500));
-                //var grp = Data.Pictures.GroupBy(pic => pic.Location);
                 
+                foreach (var pic in Data.Pictures)
+                {
+
+                    var collection = Pictures[pic.Location.ToString()];
+                    collection.Add(pic);
+                }
+
             }
 
             
@@ -177,7 +217,46 @@ namespace Lamna.Views
         }
 
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void RefreshCommandSelection()
+        {
+            if (EditorContainer.Visibility == Visibility.Visible)
+            {
+                CameraButton.Visibility = Visibility.Collapsed;
+                GenerateButton.Visibility = Visibility.Collapsed;
+                SaveButton.Visibility = Visibility.Visible;
+                CancelButton.Visibility = Visibility.Visible;
+                DeleteButton.Visibility = Visibility.Visible;
+                CommandSeperator.Visibility = Visibility.Collapsed;
+                PasteImageButton.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                CameraButton.Visibility = Visibility.Visible;
+                GenerateButton.Visibility = Visibility.Visible;
+                SaveButton.Visibility = Visibility.Collapsed;
+                CancelButton.Visibility = Visibility.Collapsed;
+                DeleteButton.Visibility = Visibility.Collapsed;
+
+                if (MainPivot.SelectedIndex == 0)
+                {
+                    CommandSeperator.Visibility = Visibility.Collapsed;
+                    PasteImageButton.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    CommandSeperator.Visibility = Visibility.Visible;
+                    PasteImageButton.Visibility = Visibility.Visible;
+                }
+            }
+        }
+
+        private void MainPivot_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            RefreshCommandSelection();
+        }
+
+
+        private void CameraButton_Click(object sender, RoutedEventArgs e)
         {
             ((App)App.Current).MainFrame.Navigate(typeof(CameraView), Data.Id);
         }
@@ -187,11 +266,7 @@ namespace Lamna.Views
             var pic = e.ClickedItem as LocationPicture;
             Editor.Picture = pic;
             EditorContainer.Visibility = Visibility.Visible;
-
-            CameraButton.Visibility = Visibility.Collapsed;
-            GenerateButton.Visibility = Visibility.Collapsed;
-            SaveButton.Visibility = Visibility.Visible;
-            CancelButton.Visibility = Visibility.Visible;
+            RefreshCommandSelection();
         }
 
         private void DiscardPictureClicked(object sender, RoutedEventArgs e)
@@ -209,13 +284,10 @@ namespace Lamna.Views
         {
             EditorContainer.Visibility = Visibility.Collapsed;
 
-            CameraButton.Visibility = Visibility.Visible;
-            GenerateButton.Visibility = Visibility.Visible;
-            SaveButton.Visibility = Visibility.Collapsed;
-            CancelButton.Visibility = Visibility.Collapsed;
+            RefreshCommandSelection();
         }
-
-        private async void PasteClicked(object sender, RoutedEventArgs e)
+        
+        private async void PasteImageButton_Click(object sender, RoutedEventArgs e)
         {
             Button bt = sender as Button;
             bt.IsEnabled = false;
@@ -247,9 +319,19 @@ namespace Lamna.Views
                     LocationPicture pic = new LocationPicture();
                     pic.ID = id;
                     pic.RawImageUri = pic.ImageUri = "ms-appdata:///local/" + id + ".jpg";
-                    pic.Location = LocationEnumaration.Roof; //TODO
+
+                    LocationEnumaration loc;
+                    string currentLoc = (MainPivot.SelectedItem as PivotItem).Header as string;
+                    Enum.TryParse<LocationEnumaration>(currentLoc, out loc);
+                    pic.Location = loc;
 
                     Data.Pictures.Add(pic);
+                    Pictures[currentLoc].Add(pic);
+
+
+                    // Don't save until navigating from page for demo purposes
+                    //await DataSource.GetInstance().UpdateAppointmentsAsync();
+
 
                 }
                 catch (Exception ex)
@@ -260,9 +342,28 @@ namespace Lamna.Views
 
 
             }
+            
             bt.IsEnabled = true;
+        }
+
+        private void GenerateButton_Click(object sender, RoutedEventArgs e)
+        {
 
         }
 
+        private async void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            Button bt = sender as Button;
+            bt.IsEnabled = false;
+
+            Data.Pictures.Remove(Editor.Picture);
+            Pictures[(MainPivot.SelectedItem as PivotItem).Header as string].Remove(Editor.Picture);
+
+            CloseEditor();
+
+            await DataSource.GetInstance().UpdateAppointmentsAsync();
+
+            bt.IsEnabled = true;
+        }
     }
 }
