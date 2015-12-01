@@ -14,7 +14,7 @@ namespace Lamna.Data
         const string cacheKey = "lamna_data";
         const string userCacheKey = "lamna_user";
 
-        public static string BingMapsKey = "FySvlXjivCDPa2T4FHQB~R9u7hEyUOYk8mGfNOn599g~AiWs3OvU5Iumz9ytkmcb_lD_ZcHTZR2mNXMqWq74Nra7mEano0SbVuTWHTIxqXDU";
+        public static string BingMapsKey = "<ADD YOUR BING MAPS API KEY HERE>";
 
         public static DateTime Now = new DateTime(2015, 10, 21, 0, 0, 0);
 
