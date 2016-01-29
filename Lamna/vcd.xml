@@ -15,6 +15,8 @@
     <Command Name="what">
       <Example> What are my Lamna appointments for today? </Example>
       <ListenFor RequireAppName="ExplicitlySpecified"> What is on {builtin:AppName} today? </ListenFor>
+      <ListenFor RequireAppName="ExplicitlySpecified"> What's on {builtin:AppName} today? </ListenFor>
+      <ListenFor RequireAppName="ExplicitlySpecified"> How does my {builtin:AppName} schedule look today? </ListenFor>
       <Feedback> Lamna to the rescue! </Feedback>
       <VoiceCommandService Target="VoiceServiceEndpoint" />
     </Command>

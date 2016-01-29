@@ -134,7 +134,7 @@ namespace LamnaCortanaService
 
                                 tile.TextLine1 = app.FamilyName;
                                 tile.TextLine2 = app.Address;
-                                tile.Title = "2:00 PM";
+                                tile.Title = app.Time.ToString("hh:mm");
                                 tile.Image = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///Assets/house.png"));
                                 tiles.Add(tile);
                             }
